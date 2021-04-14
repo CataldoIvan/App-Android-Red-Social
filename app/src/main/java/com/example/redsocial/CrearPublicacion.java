@@ -129,7 +129,8 @@ public class CrearPublicacion extends AppCompatActivity {
             Log.e("Error", ex.toString());
         }
 
-        //dfdf
+
+
         if (imagenArchivo != null) {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, "MyPicture");
