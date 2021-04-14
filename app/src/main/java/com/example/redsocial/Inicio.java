@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.redsocial.entidades.Publicacion;
 import com.example.redsocial.entidades.PublicacionAdaptador;
+import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -62,23 +65,16 @@ public class Inicio extends AppCompatActivity {
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.RECORD_AUDIO}, 0);
         }
-        conxDB=new ConexionSQLiteHelper(this,"db_comentarios",null,1);
-        msj=(TextView)findViewById(R.id.msjBienvTV);
+        conxDB=new ConexionSQLiteHelper(this);
         nuevaPubli=(Button)findViewById(R.id.nuevaPubliBTN);
         mListView=findViewById(R.id.listadoPost);
 
-        Intent intento=getIntent();
-        if (intento.getStringExtra("usu")!=null){
-            Utilidades.USER_LOGUEADO=intento.getStringExtra("usu");
-            msj.setText("Usuario: "+ USER_LOGUEADO);
-            setTitle("Bienvenido "+USER_LOGUEADO);
-        }else{
-            msj.setText("se rompiooooo ="+ intento.getStringExtra("usu"));
-       }
+        ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
+        Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
+/*        Toast.makeText(this, ""+Utilidades.USER_LOGUEADO+"\n"+
+                objUser.getNombre()+objUser.getMail(), Toast.LENGTH_LONG).show();*/
+        setTitle("Bienvenido "+objUser.getNombre());
 
-
-        /// esto es para llenar el array manualmente
-        //mListPublicacion.add(new Publicacion("hola esto es de prueba","ivan"));
 
 
         try {
@@ -116,7 +112,6 @@ public class Inicio extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intento= new Intent(getApplicationContext(),CrearPublicacion.class);
-                intento.putExtra("usu", USER_LOGUEADO);
                 startActivity(intento);
             }
         });
@@ -156,6 +151,9 @@ public class Inicio extends AppCompatActivity {
                 publicacion.setImg_Post(null);
             }
 
+            Usuario objUserPost=conxDB.obtenerDatosUserForId(parseInt(cursor.getString(2)));
+            publicacion.setUsuario_nombre(objUserPost.getNombre());
+            publicacion.setUsuario_img_perfil(objUserPost.getImg_Post());
 
 
             /* Forma Antigua de publicar la foto
@@ -171,12 +169,6 @@ public class Inicio extends AppCompatActivity {
             //Toast.makeText(this, ""+cursor.getString(3), Toast.LENGTH_SHORT).show();
             mListPublicacion.add(publicacion);
            // Collections.reverse(mListPublicacion);
-            }
-
+        }
     }
-
-
-
-
-
 }

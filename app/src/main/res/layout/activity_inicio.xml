@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Inicio">
 
-    <TextView
-        android:id="@+id/msjBienvTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/nuevaPubliBTN"
         android:layout_width="match_parent"

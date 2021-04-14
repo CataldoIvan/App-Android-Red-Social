@@ -1,6 +1,7 @@
 package com.example.redsocial.entidades;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,11 +14,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import com.example.redsocial.ConexionSQLiteHelper;
 import com.example.redsocial.R;
 
 import java.io.File;
 import java.util.List;
+
 
 public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
     public List<Publicacion> publicacionList;
@@ -41,20 +46,29 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         Publicacion publicacion=publicacionList.get(position);
 
         ImageView imagen=view.findViewById(R.id.imagenUsuaioIV);
-        imagen.setImageResource(R.drawable.jeremy_full);
+        if (publicacion.getUsuario_img_perfil() !=null){
+
+            imagen.setImageBitmap(publicacion.getUsuario_img_perfil());
+
+        }else{
+            imagen.setImageResource(R.drawable.jeremy_full);
+        }
 
         TextView txtUser=view.findViewById(R.id.nomUsuarioTV);
-        txtUser.setText(publicacion.getId().toString()+" | "+publicacion.getUsuario_id());
+        //txtUser.setText(publicacion.getId().toString()+" | "+publicacion.getUsuario_id());
+        txtUser.setText(" | "+publicacion.getUsuario_nombre());
 
 
         TextView txtcComent=view.findViewById(R.id.comentUserTV);
         txtcComent.setText(publicacion.getComentario());
 
 
+
         imgPost=view.findViewById(R.id.postImageV);
 
         if (publicacion.getImg_Post()!=null){
             imgPost.setImageBitmap(publicacion.getImg_Post());
+           // imgPost.setImageBitmap(objUser.getImg_Post());
             imgPost.setVisibility(View.VISIBLE);
 
 

@@ -7,11 +7,15 @@
     tools:context=".Perfil"
     android:orientation="vertical">
 
+
     <ImageView
         android:id="@+id/imgPerfiliView"
         android:layout_width="match_parent"
         android:layout_height="234dp"
-        app:srcCompat="@drawable/jeremy_full" />
+        android:background="@drawable/circle"
+        android:cropToPadding="false"
+        android:hapticFeedbackEnabled="false"
+        app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/nombreUserTV"

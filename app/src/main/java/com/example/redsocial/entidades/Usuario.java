@@ -1,10 +1,13 @@
 package com.example.redsocial.entidades;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    String nombre,apellido,mail;
-    Integer id,contrasenia,comentario_id;
+    private String nombre,apellido,mail;
+    private Integer id,contrasenia,comentario_id;
+    private Bitmap img_Post;
 
     public Usuario() {
 
@@ -49,6 +52,14 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
+    public Integer getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(Integer contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
     public Integer getComentario_id() {
         return comentario_id;
     }
@@ -56,4 +67,15 @@ public class Usuario implements Serializable {
     public void setComentario_id(Integer comentario_id) {
         this.comentario_id = comentario_id;
     }
+
+    public Bitmap getImg_Post() {
+        return img_Post;
+    }
+
+    public void setImg_Post(Bitmap img_Post) {
+        this.img_Post = img_Post;
+    }
+
+    
+
 }

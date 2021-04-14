@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,8 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redsocial.entidades.Publicacion;
+import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,12 +75,17 @@ public class CrearPublicacion extends AppCompatActivity {
         sacarfoto=(Button)findViewById(R.id.tomarFotoBNT);
 
 
-        imagen.setImageResource(R.drawable.jeremy_full);
+        //imagen.setImageResource(R.drawable.jeremy_full);
 
         //asigno a USERLOGUEADO el nombre del campo puesto en inicio
-        Intent intento=getIntent();
-        Utilidades.USER_LOGUEADO=intento.getStringExtra("usu");
-        userPubli.setText("Usuario: "+Utilidades.USER_LOGUEADO);
+        ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
+        Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
+        /*Toast.makeText(this, ""+Utilidades.USER_LOGUEADO+"\n"+
+                objUser.getNombre()+objUser.getMail(), Toast.LENGTH_LONG).show();*/
+        userPubli.setText(objUser.getNombre()+" "+objUser.getApellido());
+
+
+        imagen.setImageBitmap(objUser.getImg_Post());
 
         // creo ola funcion para cargar imagen
         cargar_img.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +136,8 @@ public class CrearPublicacion extends AppCompatActivity {
             values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis());
             imagenUri = getContentResolver().insert(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-/*
+
+            /*
             imagenUri = FileProvider.getUriForFile(this, "com.xample.redSocial.fileprovider", imagenArchivo);
            */ intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
             startActivityForResult(intent, 10);
@@ -158,6 +168,7 @@ public class CrearPublicacion extends AppCompatActivity {
                 if (requestCode == 10 && resultCode == RESULT_OK) {
                     try {
                         imgToStorage = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+
                         imagen_post.setImageBitmap(imgToStorage);
                     } catch (FileNotFoundException e) {
                         System.out.println("ERROR FILE /////////////////////"+e);
@@ -181,17 +192,11 @@ public class CrearPublicacion extends AppCompatActivity {
         }*/
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        @SuppressWarnings("deprecation") Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
+
 
     private void registraPublicacion() {
 
-        ConexionSQLiteHelper conxDB=new ConexionSQLiteHelper(this,"db_comentarios",null,1);
+        ConexionSQLiteHelper conxDB=new ConexionSQLiteHelper(this);
 
         SQLiteDatabase db=conxDB.getWritableDatabase();
 
@@ -201,24 +206,65 @@ public class CrearPublicacion extends AppCompatActivity {
         // forma anterior de cargar foto
        // values.put(Utilidades.CAMPO_IMG_POST,Utilidades.RUTA_IMAGEN);
 
+      /*  File imagenFile = new File(getIntent().getExtras().getString("imageView"));
 
-
+        if (!getIntent().getExtras().getString("imageView").equals("NULL") && imagenFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(getIntent().getExtras().getString("imageView"));
+            ExifInterface ei = null;
+            try {
+                ei = new ExifInterface(getIntent().getExtras().getString("imageView"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+            Bitmap rotatedBitmap = null;
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotatedBitmap = rotateImage(bitmap, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotatedBitmap = rotateImage(bitmap, 180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotatedBitmap = rotateImage(bitmap, 270);
+                    break;
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    rotatedBitmap = bitmap;
+            }
+            imageView.setImageBitmap(rotatedBitmap);
+        }*/
         //Nueva forma de almacenar imagenes
-        Bitmap imagenAAlmacenarBitmap=imgToStorage;
-        objectByteArrayOutputStream =new ByteArrayOutputStream();
-        imagenAAlmacenarBitmap.compress(Bitmap.CompressFormat.JPEG,PICK_IMG_REQUEST,objectByteArrayOutputStream);
-        imagenInBytes=objectByteArrayOutputStream.toByteArray();
-        values.put(Utilidades.CAMPO_IMG_POST,imagenInBytes);
+        if (imgToStorage!=null){
+            Bitmap imagenAAlmacenarBitmap=imgToStorage;
+            objectByteArrayOutputStream =new ByteArrayOutputStream();
+            imagenAAlmacenarBitmap.compress(Bitmap.CompressFormat.JPEG,PICK_IMG_REQUEST,objectByteArrayOutputStream);
+            imagenInBytes=objectByteArrayOutputStream.toByteArray();
+            values.put(Utilidades.CAMPO_IMG_POST,imagenInBytes);
 
+        }
 
         Long idresultante=db.insert(Utilidades.TABLA_COMENTARIO,Utilidades.CAMPO_ID,values);
+
         Toast.makeText(this, "Se ingreso :"+idresultante, Toast.LENGTH_LONG).show();
 
-       /* Utilidades.RUTA_IMAGEN=null;
+        imgToStorage=null;
         Intent intento=new Intent(getApplicationContext(),Inicio.class);
-        intento.putExtra("usu",Utilidades.USER_LOGUEADO);
         startActivity(intento);
-        onBackPressed();*/
+        onBackPressed();
+    }
+
+    private byte[] imagemTratada(byte[] imagem_img){
+
+        while (imagem_img.length > 500000){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imagem_img, 0, imagem_img.length);
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.8), (int)(bitmap.getHeight()*0.8), true);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            imagem_img = stream.toByteArray();
+        }
+        return imagem_img;
+
     }
 
 
