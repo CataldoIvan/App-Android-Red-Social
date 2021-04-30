@@ -5,15 +5,15 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    private String nombre,apellido,mail;
-    private Integer id,contrasenia,comentario_id;
+    private String nombre,apellido,mail,contrasenia;
+    private Integer id,comentario_id;
     private Bitmap img_Post;
 
     public Usuario() {
 
     }
 
-    public Usuario(String nombre, String apellido, String mail, Integer contrasenia) {
+    public Usuario(String nombre, String apellido, String mail, String contrasenia) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
@@ -52,11 +52,11 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Integer getContrasenia() {
+    public String getContrasenia() {
         return contrasenia;
     }
 
-    public void setContrasenia(Integer contrasenia) {
+    public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 

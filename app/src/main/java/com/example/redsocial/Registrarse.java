@@ -18,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redsocial.utilidades.Utilidades;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class Registrarse extends AppCompatActivity {
     TextView nombre;
@@ -55,7 +57,14 @@ public class Registrarse extends AppCompatActivity {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guardarNuevoUsuario();
+                if (validarContrasena(contrasenia.getText().toString())){
+
+                    guardarNuevoUsuario();
+                }else{
+                    Toast.makeText(Registrarse.this, " no coincide", Toast.LENGTH_SHORT).show();
+                   // Snackbar.make(null,"errro",3000);
+                }
+
             }
         });
 
@@ -98,6 +107,7 @@ public class Registrarse extends AppCompatActivity {
 
     }
 
+
     private void guardarNuevoUsuario() {
         ConexionSQLiteHelper conxDB_user=new ConexionSQLiteHelper(this);
         SQLiteDatabase db_user=conxDB_user.getWritableDatabase();
@@ -126,5 +136,10 @@ public class Registrarse extends AppCompatActivity {
         Long idresultante_user=db_user.insert(Utilidades.TABLA_USUARIOS,Utilidades.CAMPO_USER_ID,values_user);
         Toast.makeText(this, "USUARIO REGISTRADO :"+idresultante_user, Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    private boolean validarContrasena (String contrasena){
+       // Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+        return true;//contrasena.matches(String.valueOf(pattern));
     }
 }

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import com.example.redsocial.utilidades.Utilidades;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+
+import static java.lang.Integer.parseInt;
 
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
@@ -44,7 +47,19 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva) {
         db.execSQL("DROP TABLE IF EXISTS comentarios");
         db.execSQL("DROP TABLE IF EXISTS usuarios");
+        db.execSQL("PRAGMA foreign_keys=ON");
     //onCreate(db);
+    }
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                db.setForeignKeyConstraintsEnabled(true);
+            } else {
+                db.execSQL("PRAGMA foreign_keys=ON");
+            }
+        }
     }
 
     public Usuario obtenerDatosUserLog(String usuario){
@@ -58,7 +73,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 objUser.setNombre(objCursor.getString(objCursor.getColumnIndex("nombre")));
                 objUser.setApellido(objCursor.getString(objCursor.getColumnIndex("apellido")));
                 objUser.setMail(objCursor.getString(objCursor.getColumnIndex("correo")));
-                objUser.setContrasenia(objCursor.getInt(objCursor.getColumnIndex("contrasenia")));
+                objUser.setContrasenia(objCursor.getString(objCursor.getColumnIndex("contrasenia")));
                 //objUser.setComentario_id(objCursor.getInt(5));
                 //convierto la imagen tipo Blob en ArraByte y luego en Bitmap para pasarlo al objeto
                 try{if (objCursor.getBlob(objCursor.getColumnIndex("img_perfil"))!=null){
@@ -97,7 +112,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 objUser.setNombre(objCursor.getString(objCursor.getColumnIndex("nombre")));
                 objUser.setApellido(objCursor.getString(objCursor.getColumnIndex("apellido")));
                 objUser.setMail(objCursor.getString(objCursor.getColumnIndex("correo")));
-                objUser.setContrasenia(objCursor.getInt(objCursor.getColumnIndex("contrasenia")));
+                objUser.setContrasenia(objCursor.getString(objCursor.getColumnIndex("contrasenia")));
                 //objUser.setComentario_id(objCursor.getInt(5));
                 //convierto la imagen tipo Blob en ArraByte y luego en Bitmap para pasarlo al objeto
                 byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
@@ -114,6 +129,39 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
         return objUser;
     }
+
+    public Publicacion obtenerDatosPublicacionPorId(Integer publicacion){
+
+        SQLiteDatabase objSQLdb=this.getReadableDatabase();
+        Publicacion objPubli=null;
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM comentarios c INNER JOIN usuarios u on u.id=c.usuario_id WHERE c.id="+publicacion,null);
+       if(objCursor!=null){
+
+            while (objCursor.moveToNext()){
+                objPubli= new Publicacion();
+                objPubli.setId(objCursor.getInt(0));
+                objPubli.setComentario(objCursor.getString(1));
+                objPubli.setUsuario_id(objCursor.getString(2));
+                objPubli.setImg_Post(objCursor.getString(3));
+                System.out.println("//********///////////// COMENTAROP "+objPubli.getComentario());
+                System.out.println("//********///////////// user aid"+objPubli.getUsuario_id());
+                System.out.println("//********///////////// img posty "+objPubli.getImg_Post());
+                objPubli.setUsuario_nombre(objCursor.getString(6));
+
+                byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
+                Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+                objPubli.setUsuario_img_perfil(theImage);
+
+                }
+
+
+
+            }
+        return objPubli;
+       }
+
+
 
 
 

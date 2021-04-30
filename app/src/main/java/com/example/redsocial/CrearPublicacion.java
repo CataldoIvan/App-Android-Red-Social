@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.redsocial.entidades.Publicacion;
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,24 +43,24 @@ public class CrearPublicacion extends AppCompatActivity {
     Button cargar_img;
     TextView userPubli;
     EditText textoET;
-    Integer posicion;
     ImageView imagen;
     ImageView imagen_post;
-    String direccUriImg;
     Integer SELEC_IMAGEN=10;
     Button sacarfoto;
 
     // VARIABLES PARA ALMACENAR FOTOS
-    private  int PICK_IMG_REQUEST=100;
+    private  int PICK_IMG_REQUEST=200;
     private Uri imgFilePath;
     private Bitmap imgToStorage;
-    private ByteArrayOutputStream objectByteArrayOutputStream;
-    private byte[] imagenInBytes;
-    String RUTA_IMAGEN;
+    String pathImagen;
     private Uri imagenUri;
     Boolean useCam=false;
     Boolean useGallery=false;
-    Bitmap imgReducidaAlmac;
+    //variables tomas
+    String NOMBREIMAGEN;
+    int TOMAR_FOTO=100;
+
+
 
 
     @Override
@@ -118,12 +119,11 @@ public class CrearPublicacion extends AppCompatActivity {
         Intent intento= new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intento.setType("image/");
         startActivityForResult(intento,PICK_IMG_REQUEST);
-
     }
 
     public void AbrirCamara() {
-        useCam=true;
-        useGallery=false;
+        useCam = true;
+        useGallery = false;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File imagenArchivo = null;
         try {
@@ -131,175 +131,62 @@ public class CrearPublicacion extends AppCompatActivity {
         } catch (IOException ex) {
             Log.e("Error", ex.toString());
         }
-
-
-
         if (imagenArchivo != null) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "MyPicture");
-            values.put(MediaStore.Images.Media.ORIENTATION,6);
-            values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis());
-            imagenUri = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            imagenUri = FileProvider.getUriForFile(this, "com.example.redsocial.fileprovider", imagenArchivo);
 
-            /*
-            imagenUri = FileProvider.getUriForFile(this, "com.xample.redSocial.fileprovider", imagenArchivo);
-           */ intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
-            startActivityForResult(intent, 10);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
+            startActivityForResult(intent, TOMAR_FOTO);
+
         }
     }
-
     private File CrearImagen() throws IOException {
         String nombreImagen = "Foto_";
         File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imagen = File.createTempFile(nombreImagen, ".jpg", directorio);
-        RUTA_IMAGEN = imagen.getAbsolutePath();
-
+        Utilidades.RUTA_IMAGEN = imagen.getAbsolutePath();
         return imagen;
     }
-    Bitmap imagenRotada=null;
-    String pathImagen;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-            if (useGallery){
-                if (requestCode== PICK_IMG_REQUEST && resultCode==RESULT_OK && data !=null &&
-                        data.getData()!=null) {
-                    imgFilePath = data.getData();
-                    imgToStorage = MediaStore.Images.Media.getBitmap(getContentResolver(), imgFilePath);
-                   // imgReducidaAlmac=redimensionarImg(imgToStorage,600,800);
+        if (useGallery){
+            if (requestCode== PICK_IMG_REQUEST && resultCode==RESULT_OK && data !=null &&
+                    data.getData()!=null) {
+                imgFilePath = data.getData();
+                Utilidades.RUTA_IMAGEN=getRealPathFromURI(imgFilePath).toLowerCase();
+                imagen_post.setImageURI(imgFilePath);
+            }
+        }
+        if (useCam) {
+            if (resultCode == RESULT_OK && data != null) {
+                File imagenfile=new File(Utilidades.RUTA_IMAGEN);
+                imgFilePath = data.getData();
+
+                if (imagenfile.exists()) {
+                    imgToStorage=BitmapFactory.decodeFile(imagenfile.getAbsolutePath());
+
                     imagen_post.setImageBitmap(imgToStorage);
                 }
+               // almacenamiento sin girar la imagen
+                //imgToStorage=BitmapFactory.decodeFile(imagenfile.getAbsolutePath());
+                //imagen_post.setImageBitmap(imgToStorage);
             }
-            if (useCam){
-                if (requestCode == 10 && resultCode == RESULT_OK) {
-
-                    //*************LA VIEJA FORMA DE CARGAR IMAGENES*********
-                   // if (resultCode == RESULT_OK && requestCode == SELEC_IMAGEN && data != null) {
-                        Uri imagen = data.getData();
-                         pathImagen = getRealPathFromURI(imagen).toLowerCase();
-                        System.out.println(pathImagen);
-                        Utilidades.RUTA_IMAGEN = pathImagen;
-                        imagen_post.setImageURI(imagen);
-                  //  }
-                    try {
-                        imgToStorage = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
-                       // imgReducidaAlmac= Bitmap.createScaledBitmap(imgToStorage, 120 , 180, false);
-                       /////////////////// dar vueltya imaghen
-                        File imageFile = new File(pathImagen);
-                        ExifInterface ei = new ExifInterface(imageFile.getAbsolutePath());
-                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                        Matrix objMatrix = new Matrix();
-
-                        switch (orientation) {
-
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                Toast.makeText(this, "SE ENTRO EN LA DE 90", Toast.LENGTH_LONG).show();
-                                objMatrix.postRotate(90);
-                                imagenRotada=Bitmap.createBitmap(imgToStorage, 0, 0, imgToStorage.getWidth(), imgToStorage.getHeight(), objMatrix, false);
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                Toast.makeText(this, "eSTA EN 180", Toast.LENGTH_LONG).show();
-
-                                objMatrix.postRotate(180);
-                                imagenRotada=Bitmap.createBitmap(imgToStorage, 0, 0, imgToStorage.getWidth(), imgToStorage.getHeight(), objMatrix, false);
-                                break;
-
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                Toast.makeText(this, "eSTA EN 270", Toast.LENGTH_LONG).show();
-
-                                objMatrix.postRotate(270);
-                                imagenRotada=Bitmap.createBitmap(imgToStorage, 0, 0, imgToStorage.getWidth(), imgToStorage.getHeight(), objMatrix, false);
-                                break;
-
-                            case ExifInterface.ORIENTATION_NORMAL:
-
-                            default:
-                                Toast.makeText(this, "NO SE MODIFICO LA FOTO", Toast.LENGTH_LONG).show();
-
-                                imagenRotada=imgToStorage;
-                                break;
-
-                        }
-                        //////////////////////////
-                        imagen_post.setImageBitmap(imgToStorage);
-                    } catch (FileNotFoundException e) {
-                        System.out.println("ERROR FILE /////////////////////"+e);
-                    } catch (IOException e) {
-                        System.out.println("****************"+e);
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
+
+
     public String getRealPathFromURI(Uri uri) {
 
-        String[] projection = {MediaStore.Images.Media.DATA,MediaStore.Images.Media.ORIENTATION};
+        String[] projection = {MediaStore.Images.Media.DATA};
         @SuppressWarnings("deprecation") Cursor cursor = managedQuery(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
 
-   /* private Bitmap redimensionarImg(Bitmap imgToStorage, int nuevoAncho, int nuevoAlto) throws IOException {
-        imgReducidaAlmac=redimensionarImg(imgToStorage,600,800);
-        int ancho = imgToStorage.getWidth();
-        int alto = imgToStorage.getHeight();
-        int escalaAncho ;
-        int escalaAlto;
-
-        if (ancho>nuevoAncho || alto>nuevoAlto) {
-            escalaAncho = nuevoAncho / ancho;
-             escalaAlto = nuevoAlto / alto;
-        }else {
-             escalaAncho = ancho;
-             escalaAlto = alto;
-
-        }
-            ExifInterface ei = new ExifInterface(RUTA_IMAGEN);
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_UNDEFINED);
-            Matrix objMatrix = new Matrix();
-            switch (orientation) {
-
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    objMatrix.setRotate(90);
-                    return Bitmap.createBitmap(imgToStorage, 0, 0, escalaAncho, escalaAlto, objMatrix, false);
-
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    objMatrix.setRotate(180);
-                    return Bitmap.createBitmap(imgToStorage, 0, 0, escalaAncho, escalaAlto, objMatrix, false);
-
-
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    objMatrix.setRotate(270);
-                    return Bitmap.createBitmap(imgToStorage, 0, 0, escalaAncho, escalaAlto, objMatrix, false);
-
-
-                case ExifInterface.ORIENTATION_NORMAL:
-
-                default:
-                    return imgToStorage;
-
-            }
-
-       *//* if (ancho>nuevoAncho || alto>nuevoAlto){
-            float escalaAncho=nuevoAncho/ancho;
-            float escalaAlto=nuevoAlto/alto;
-
-            objMatrix.postScale(escalaAncho,escalaAlto);
-            return Bitmap.createBitmap(imgToStorage,0,0,ancho,alto,objMatrix,false);
-        }else {
-            return imgToStorage;
-        }*//*
-
-    }*/
 
 
     private void registraPublicacion() {
@@ -312,69 +199,23 @@ public class CrearPublicacion extends AppCompatActivity {
         values.put(Utilidades.CAMPO_COMENTARIO,textoET.getText().toString());
         values.put(Utilidades.CAMPO_USUARIOID,Utilidades.USER_LOGUEADO);
         // forma anterior de cargar foto
-       // values.put(Utilidades.CAMPO_IMG_POST,Utilidades.RUTA_IMAGEN);
-
-      /*  File imagenFile = new File(getIntent().getExtras().getString("imageView"));
-
-        if (!getIntent().getExtras().getString("imageView").equals("NULL") && imagenFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(getIntent().getExtras().getString("imageView"));
-            ExifInterface ei = null;
-            try {
-                ei = new ExifInterface(getIntent().getExtras().getString("imageView"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-            Bitmap rotatedBitmap = null;
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotatedBitmap = rotateImage(bitmap, 90);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotatedBitmap = rotateImage(bitmap, 180);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotatedBitmap = rotateImage(bitmap, 270);
-                    break;
-                case ExifInterface.ORIENTATION_NORMAL:
-                default:
-                    rotatedBitmap = bitmap;
-            }
-            imageView.setImageBitmap(rotatedBitmap);
-        }*/
-        //Nueva forma de almacenar imagenes
-        if (imgToStorage!=null){
-            Bitmap imagenAAlmacenarBitmap=imgToStorage;
-            objectByteArrayOutputStream =new ByteArrayOutputStream();
-            imagenAAlmacenarBitmap.compress(Bitmap.CompressFormat.JPEG,PICK_IMG_REQUEST,objectByteArrayOutputStream);
-            imagenInBytes=objectByteArrayOutputStream.toByteArray();
-            values.put(Utilidades.CAMPO_IMG_POST,imagenInBytes);
-
-        }
+        values.put(Utilidades.CAMPO_IMG_POST,Utilidades.RUTA_IMAGEN);
 
         Long idresultante=db.insert(Utilidades.TABLA_COMENTARIO,Utilidades.CAMPO_ID,values);
 
-        Toast.makeText(this, "Se ingreso :"+idresultante, Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content),"Se ingreso :"+idresultante,
+                Snackbar.LENGTH_LONG).setDuration(5000).show();
 
         imgToStorage=null;
-        imgReducidaAlmac=null;
+        Utilidades.RUTA_IMAGEN=null;
+        useGallery=false;
+        useCam=false;
         Intent intento=new Intent(getApplicationContext(),Inicio.class);
         startActivity(intento);
         onBackPressed();
     }
 
-    private byte[] imagemTratada(byte[] imagem_img){
 
-        while (imagem_img.length > 500000){
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imagem_img, 0, imagem_img.length);
-            Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.8), (int)(bitmap.getHeight()*0.8), true);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            imagem_img = stream.toByteArray();
-        }
-        return imagem_img;
-
-    }
 
 
 }

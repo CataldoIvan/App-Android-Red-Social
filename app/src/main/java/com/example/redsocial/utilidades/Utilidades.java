@@ -32,7 +32,8 @@ public class Utilidades extends AppCompatActivity {
     public static final String CAMPO_USUARIOID="usuario_id";
     public static final String CREAR_TABLA_COMENTARIO="CREATE TABLE "+TABLA_COMENTARIO+" " +
             "("+CAMPO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_COMENTARIO+" TEXT,"+
-            CAMPO_USUARIOID+" INTEGER,"+CAMPO_IMG_POST+" BLOB)";
+            CAMPO_USUARIOID+" INTEGER,"+CAMPO_IMG_POST+" TEXT," +
+            "foreign key(usuario_id) references usuarios(id))";
     public static String RUTA_IMAGEN;
 
 
