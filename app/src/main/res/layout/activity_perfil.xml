@@ -1,74 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Perfil"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Perfil">
 
-    <ImageView
-        android:id="@+id/imgPerfiliView"
-        android:layout_width="match_parent"
-        android:layout_height="234dp"
-        app:srcCompat="@drawable/jeremy_full" />
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/nombreUserTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:text="NombreUser"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#131313"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/mailUserTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:text="aca va mail"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="202dp"
+                app:srcCompat="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/edadUserTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:text="aca va edad"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="24sp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="172dp"
+                android:text="TextView"
+                android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/backBTNPerf"
-            android:layout_width="153dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="124dp"
-            android:text="Volver"
-            app:layout_constraintEnd_toStartOf="@+id/editarPerfBTN"
-            app:layout_constraintHorizontal_bias="0.38"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="388dp" />
 
-        <Button
-            android:id="@+id/editarPerfBTN"
-            android:layout_width="137dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="128dp"
-            android:layout_marginEnd="52dp"
-            android:layout_marginRight="52dp"
-            android:text="Editar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

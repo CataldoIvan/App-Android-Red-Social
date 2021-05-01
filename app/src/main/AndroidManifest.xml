@@ -5,8 +5,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RedSocial">
-        <activity android:name=".Perfil"></activity>
+        <activity android:name=".PublcacionSeleccionada"></activity>
+        <activity android:name=".Perfil" />
         <activity android:name=".Registrarse" />
         <activity android:name=".CrearPublicacion" />
         <activity android:name=".Inicio" />
@@ -33,7 +40,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.xample.appredsocial.fileprovider"
+            android:authorities="com.example.redsocial.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

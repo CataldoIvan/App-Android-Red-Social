@@ -1,46 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:cardCornerRadius="10dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp">
 
-        <ImageView
-            android:id="@+id/imagenUsuaioIV"
-            android:layout_width="105dp"
-            android:layout_height="108dp"
-            app:srcCompat="@drawable/jeremy_full" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/publSelFotoPerfil"
+            android:layout_width="70dp"
+            android:layout_height="66dp"
+            android:src="@drawable/ic_launcher_background"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="2dp"
+            android:elevation="1dp"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/nomUsuarioTV"
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nombre User"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:layout_height="4dp"
+                android:contentDescription="gh"
+                android:padding="10dp"
+                tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/comentUserTV"
+                android:id="@+id/publSelNomUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Nombre User"
+                android:clickable="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:contentDescription="gh"
+                android:padding="10dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/publSelPublicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="aca va comentario" />
+                android:paddingLeft="10dp"
+                android:text="aca va comentario"
+                android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/postImageV"
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:contentDescription="gh"
+                android:padding="10dp"
+                tools:visibility="visible" />
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="300dp"
-                android:layout_height="250dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                android:layout_height="270dp"
+                app:cardCornerRadius="15dp">
+                <ImageView
+                    android:id="@+id/publSelFoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:contentDescription="gh"
+                android:padding="10dp"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

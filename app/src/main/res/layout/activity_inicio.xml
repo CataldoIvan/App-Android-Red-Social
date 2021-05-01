@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Inicio">
+    android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    tools:context=".Inicio"
+    android:background="@color/purple_200">
 
-    <TextView
-        android:id="@+id/msjBienvTV"
+
+    <LinearLayout
+        android:id="@+id/linearL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="78dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/jeremy_full" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/nuevaPubliBTN"
@@ -20,8 +33,5 @@
     <ListView
         android:id="@+id/listadoPost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </ListView>
+        android:layout_height="607dp" />
 </LinearLayout>
