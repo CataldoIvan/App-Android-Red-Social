@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:overScrollMode="ifContentScrolls"
-    tools:context=".Inicio">
+    tools:context=".Inicio"
+    android:background="@color/purple_200">
 
 
     <LinearLayout
@@ -32,5 +33,5 @@
     <ListView
         android:id="@+id/listadoPost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="607dp" />
 </LinearLayout>

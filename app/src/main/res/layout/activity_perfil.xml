@@ -41,37 +41,10 @@
                 android:text="TextView"
                 android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="172dp"
-                android:text="TextView"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="172dp"
-                android:text="TextView"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="172dp"
-                android:text="TextView"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="172dp"
-                android:text="TextView"
-                android:textSize="24sp" />
-
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="388dp" />
+
         </LinearLayout>
     </ScrollView>
 

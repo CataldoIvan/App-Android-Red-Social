@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.redsocial.Inicio;
 import com.example.redsocial.Perfil;
 import com.example.redsocial.PublcacionSeleccionada;
 import com.example.redsocial.R;
@@ -54,18 +56,25 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         }else{
             imagen.setImageResource(R.drawable.jeremy_full);
         }
-
-        TextView txtUser=view.findViewById(R.id.publSelNomUser);
-        txtUser.setText("id:"+publicacion.getId()+" | "+publicacion.getUsuario_nombre());
-        /*txtUser.setOnClickListener(new View.OnClickListener() {
+        imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent objIntent=new Intent(getContext(), Perfil.class);
                 objIntent.putExtra("usuarioNro",publicacion.getUsuario_id());
-
-
+                context.startActivity(objIntent);
             }
-        });*/
+        });
+
+        TextView txtUser=view.findViewById(R.id.publSelNomUser);
+        txtUser.setText("id:"+publicacion.getId()+" | "+publicacion.getUsuario_nombre());
+        txtUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent objIntent=new Intent(getContext(), Perfil.class);
+                objIntent.putExtra("usuarioNro",publicacion.getUsuario_id());
+                context.startActivity(objIntent);
+            }
+        });
         TextView txtcComent=view.findViewById(R.id.publSelPublicacion);
         txtcComent.setText(publicacion.getComentario());
 
@@ -112,9 +121,6 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         System.out.println("////////////////////////////////LA IMAGEN ES DE EEEEEE "+publicacion.getImg_Post());
        //Uri uri=imagenfile.toURI();
        // imgPost.setImageURI(imagenfile.getAbsolutePath());
-
-
-
 
         return view;
     }

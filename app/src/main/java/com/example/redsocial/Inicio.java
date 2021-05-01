@@ -28,6 +28,8 @@ import com.example.redsocial.entidades.PublicacionAdaptador;
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,30 +48,21 @@ public class Inicio extends AppCompatActivity {
     ConexionSQLiteHelper conxDB;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
 
-
         conxDB=new ConexionSQLiteHelper(this);
         nuevaPubli=(Button)findViewById(R.id.nuevaPubliBTN);
         mListView=findViewById(R.id.listadoPost);
 
-
-
-
         ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
         //Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
         Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
-/*        Toast.makeText(this, ""+Utilidades.USER_LOGUEADO+"\n"+
+        /*   Toast.makeText(this, ""+Utilidades.USER_LOGUEADO+"\n"+
                 objUser.getNombre()+objUser.getMail(), Toast.LENGTH_LONG).show();*/
         setTitle("Bienvenido "+objUser.getNombre());
-
-
 
         try {
             consultarBase();
@@ -86,20 +79,20 @@ public class Inicio extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
                 Intent objIntent=new Intent(Inicio.this,PublcacionSeleccionada.class);
                 objIntent.putExtra("postSelect",mListPublicacion.get(position).getId());
                 startActivity(objIntent);
-
-
               /*  Toast.makeText(Inicio.this, "Id:"+mListPublicacion.get(position).getId()+"\n"+
                                 "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+"\n"+
                                 "Comentario : "+mListPublicacion.get(position).getComentario()+"\n"+                             "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+
                                 "path imagen:"+mListPublicacion.get(position).getImg_Post()
-
                         , Toast.LENGTH_LONG).show();*/
 
             }
         });
+
 
 
         nuevaPubli.setOnClickListener(new View.OnClickListener() {
