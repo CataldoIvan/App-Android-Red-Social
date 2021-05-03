@@ -1,16 +1,12 @@
 package com.example.redsocial;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,13 +16,12 @@ import com.example.redsocial.utilidades.Utilidades;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imagenInBytes;
@@ -39,15 +34,17 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-    db.execSQL(Utilidades.CREAR_TABLA_COMENTARIO);
+    db.execSQL(Utilidades.CREAR_TABLA_PUBLICACION);
     db.execSQL(Utilidades.CREAR_TABLA_USUARIO);
+    db.execSQL(Utilidades.CREAR_TABLA_COMENTARIOS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva) {
-        db.execSQL("DROP TABLE IF EXISTS comentarios");
+        db.execSQL("DROP TABLE IF EXISTS publicaciones");
         db.execSQL("DROP TABLE IF EXISTS usuarios");
-        db.execSQL("PRAGMA foreign_keys=ON");
+        db.execSQL("DROP TABLE IF EXISTS comentarios");
+
     //onCreate(db);
     }
     @Override
@@ -134,7 +131,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase objSQLdb=this.getReadableDatabase();
         Publicacion objPubli=null;
-        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM comentarios c INNER JOIN usuarios u on u.id=c.usuario_id WHERE c.id="+publicacion,null);
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM publicaciones c INNER JOIN usuarios u on u.id=c.usuario_id WHERE c.id="+publicacion,null);
        if(objCursor!=null){
 
             while (objCursor.moveToNext()){

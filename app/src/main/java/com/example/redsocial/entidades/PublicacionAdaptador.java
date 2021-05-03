@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.example.redsocial.Inicio;
 import com.example.redsocial.Perfil;
@@ -34,6 +35,7 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
     public Context context;
     public int resourseLayout;
     public ImageView imgPost;
+    public CardView cardImagen;
 
 
     public PublicacionAdaptador(@NonNull Context context, int resource, List<Publicacion> objects) {
@@ -79,6 +81,7 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         txtcComent.setText(publicacion.getComentario());
 
         imgPost=view.findViewById(R.id.publSelFoto);
+        cardImagen=view.findViewById(R.id.cardImgPublicacion);
 
         if (publicacion.getImg_Post()!=null){
            // VIeja forma de cargar mostrar las fotos
@@ -115,10 +118,11 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         }else{
             imgPost.setImageBitmap(null);
             imgPost.setVisibility(View.GONE);
+            cardImagen.setVisibility(View.GONE);
         }
 
         //imgPost.setImageURI(Uri.fromFile(new File(publicacion.getImg_Post())));
-        System.out.println("////////////////////////////////LA IMAGEN ES DE EEEEEE "+publicacion.getImg_Post());
+        //System.out.println("////////////////////////////////LA IMAGEN ES DE EEEEEE "+publicacion.getImg_Post());
        //Uri uri=imagenfile.toURI();
        // imgPost.setImageURI(imagenfile.getAbsolutePath());
 

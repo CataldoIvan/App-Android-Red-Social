@@ -1,6 +1,5 @@
 package com.example.redsocial;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -10,9 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.Path;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,19 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.redsocial.entidades.Publicacion;
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
 
 public class CrearPublicacion extends AppCompatActivity {
 
@@ -196,12 +186,12 @@ public class CrearPublicacion extends AppCompatActivity {
         SQLiteDatabase db=conxDB.getWritableDatabase();
 
         ContentValues values=new ContentValues();
-        values.put(Utilidades.CAMPO_COMENTARIO,textoET.getText().toString());
+        values.put(Utilidades.CAMPO_PUBLICACION,textoET.getText().toString());
         values.put(Utilidades.CAMPO_USUARIOID,Utilidades.USER_LOGUEADO);
         // forma anterior de cargar foto
         values.put(Utilidades.CAMPO_IMG_POST,Utilidades.RUTA_IMAGEN);
 
-        Long idresultante=db.insert(Utilidades.TABLA_COMENTARIO,Utilidades.CAMPO_ID,values);
+        Long idresultante=db.insert(Utilidades.TABLA_PUBLICAIONES,Utilidades.CAMPO_ID,values);
 
         Snackbar.make(findViewById(android.R.id.content),"Se ingreso :"+idresultante,
                 Snackbar.LENGTH_LONG).setDuration(5000).show();

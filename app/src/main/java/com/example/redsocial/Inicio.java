@@ -3,35 +3,23 @@ package com.example.redsocial;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.redsocial.entidades.Publicacion;
 import com.example.redsocial.entidades.PublicacionAdaptador;
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -121,7 +109,7 @@ public class Inicio extends AppCompatActivity {
         Publicacion publicacion=null;
         mListPublicacion=new ArrayList<Publicacion>();
 
-        Cursor cursor=db.rawQuery("SELECT * FROM "+Utilidades.TABLA_COMENTARIO+" ORDER BY id DESC;",null);
+        Cursor cursor=db.rawQuery("SELECT * FROM "+Utilidades.TABLA_PUBLICAIONES +" ORDER BY id DESC;",null);
 
         while(cursor.moveToNext()){
             publicacion=new Publicacion();

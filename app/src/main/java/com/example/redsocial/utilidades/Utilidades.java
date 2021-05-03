@@ -1,22 +1,6 @@
 package com.example.redsocial.utilidades;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.redsocial.entidades.Usuario;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class Utilidades extends AppCompatActivity {
 
@@ -25,15 +9,16 @@ public class Utilidades extends AppCompatActivity {
     public static final String NOMBRE_DB="db_redSocial";
     public static Integer USER_LOGUEADO;
 
-    public static final String TABLA_COMENTARIO="comentarios";
+    public static final String TABLA_PUBLICAIONES ="publicaciones";
     public static final  String CAMPO_ID="id";
-    public static final  String CAMPO_COMENTARIO="comentario";
+    public static final  String CAMPO_PUBLICACION ="publicacion";
     public static final  String CAMPO_IMG_POST="imagenPost";
     public static final String CAMPO_USUARIOID="usuario_id";
-    public static final String CREAR_TABLA_COMENTARIO="CREATE TABLE "+TABLA_COMENTARIO+" " +
-            "("+CAMPO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_COMENTARIO+" TEXT,"+
-            CAMPO_USUARIOID+" INTEGER,"+CAMPO_IMG_POST+" TEXT," +
-            "foreign key(usuario_id) references usuarios(id))";
+    public static final String CAMPO_DATE="date";
+    public static final String CREAR_TABLA_PUBLICACION ="CREATE TABLE "+ TABLA_PUBLICAIONES +" " +
+            "("+CAMPO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+ CAMPO_PUBLICACION +" TEXT,"+
+            CAMPO_USUARIOID+" INTEGER,"+CAMPO_IMG_POST+" TEXT," +CAMPO_DATE+
+            " TEXT)";
     public static String RUTA_IMAGEN;
 
 
@@ -52,6 +37,26 @@ public class Utilidades extends AppCompatActivity {
             +CAMPO_USER_APELLIDO+" TEXT,"+CAMPO_USER_MAIL+" TEXT,"+CAMPO_USER_CONTRAS+" TEXT,"
         +CAMPO_COMENT_ID+" INTEGER,"+CAMPO_IMG_PERFIL+" BLOB)";
 
-   }
+   /* private Integer id;
+    private String comentario;
+    private Integer user_id;
+    private Integer publicacion_id;
+    private Object fecha*/
+
+    ////////// SE CREA LA TABLA COMENTARIOS
+    public static final String TABLA_COMENTARIOS="comentarios";
+    public static final  String CAMPO_COMEN_ID="id";
+    public static final  String CAMPO_COMENTARIO="comentario";
+    public static final  String CAMPO_COMEN_USERID="user_id";
+    public static final String CAMPO_COMEN_PUBLIID="publicacion_id";
+    public static final String CAMPO_COMEN_FECHA="fecha";
+
+    public static final String CREAR_TABLA_COMENTARIOS="CREATE TABLE "+TABLA_COMENTARIOS+" " +
+            "("+CAMPO_COMEN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_COMENTARIO+" TEXT,"
+            +CAMPO_COMEN_USERID+" INTEGER,"+CAMPO_COMEN_PUBLIID+" INTEGER,"+CAMPO_COMEN_FECHA+" TEXT)";
+
+
+
+}
 
 

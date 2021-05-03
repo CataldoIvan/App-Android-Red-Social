@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Utilidades.USER_LOGUEADO=0;
+       // Utilidades.USER_LOGUEADO=0;
         usuarioLog=(EditText)findViewById(R.id.usuarioLogin);
         contraseniaLog=(EditText)findViewById(R.id.contraseniaLogin);
         iniciarS=(Button)findViewById(R.id.iniSesion);
@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     //findViewById(R.id.errorPass2).setVisibility(View.VISIBLE);
                     findViewById(R.id.errorPass).setVisibility(View.VISIBLE);
                 }
-
-
-
 
                 /*Intent intento=new Intent(MainActivity.this,Inicio.class);
                 intento.putExtra("usu", usuarioLog.getText().toString());
