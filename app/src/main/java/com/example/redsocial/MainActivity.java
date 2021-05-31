@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     EditText contraseniaLog;
     Button iniciarS;
     Button registrarse;
+    Button localizacion;
     ConexionSQLiteHelper conxDB;
     ConexionSQLiteHelper conxDB_user;
 
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         contraseniaLog=(EditText)findViewById(R.id.contraseniaLogin);
         iniciarS=(Button)findViewById(R.id.iniSesion);
         registrarse=(Button)findViewById(R.id.registrarseBTN);
+        localizacion=(Button)findViewById(R.id.localizacionbtn);
         findViewById(R.id.errorPass).setVisibility(View.GONE);
-        findViewById(R.id.errorPass2).setVisibility(View.GONE);
+       // findViewById(R.id.errorPass2localizaCION).setVisibility(View.GONE);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -53,7 +55,14 @@ public class MainActivity extends AppCompatActivity {
         this.conxDB_user=new ConexionSQLiteHelper(this);
 
 
+        localizacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intento=new Intent(MainActivity.this,seleccionada2.class);
 
+                startActivity(intento);
+            }
+        });
 
         iniciarS.setOnClickListener(new View.OnClickListener() {
             @Override
