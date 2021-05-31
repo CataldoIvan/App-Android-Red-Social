@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         localizacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intento=new Intent(MainActivity.this,seleccionada2.class);
+                Intent intento=new Intent(MainActivity.this,MainActivity2.class);
 
                 startActivity(intento);
             }
