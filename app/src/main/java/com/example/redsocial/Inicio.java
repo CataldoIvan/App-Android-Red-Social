@@ -8,11 +8,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.redsocial.entidades.Publicacion;
 import com.example.redsocial.entidades.PublicacionAdaptador;
@@ -48,8 +50,7 @@ public class Inicio extends AppCompatActivity {
         ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
         //Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
         Usuario objUser=objConx.obtenerDatosUserForId(Utilidades.USER_LOGUEADO);
-        /*   Toast.makeText(this, ""+Utilidades.USER_LOGUEADO+"\n"+
-                objUser.getNombre()+objUser.getMail(), Toast.LENGTH_LONG).show();*/
+
         setTitle("Bienvenido "+objUser.getNombre());
 
         try {
@@ -60,7 +61,6 @@ public class Inicio extends AppCompatActivity {
             startActivity(intento2);
         }
 
-
         mAdapter=new PublicacionAdaptador(Inicio.this,R.layout.card_view_comentarios,mListPublicacion);
         mListView.setAdapter(mAdapter);
 
@@ -68,11 +68,10 @@ public class Inicio extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 Intent objIntent=new Intent(Inicio.this,PublcacionSeleccionada.class);
                 objIntent.putExtra("postSelect",mListPublicacion.get(position).getId());
                 startActivity(objIntent);
-              /*  Toast.makeText(Inicio.this, "Id:"+mListPublicacion.get(position).getId()+"\n"+
+                /*Toast.makeText(Inicio.this, "Id:"+mListPublicacion.get(position).getId()+"\n"+
                                 "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+"\n"+
                                 "Comentario : "+mListPublicacion.get(position).getComentario()+"\n"+                             "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+
                                 "path imagen:"+mListPublicacion.get(position).getImg_Post()

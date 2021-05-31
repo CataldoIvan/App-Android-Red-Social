@@ -1,123 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="1080dp"
+    android:orientation="vertical"
     tools:context=".PublcacionSeleccionada">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="423dp"
+        android:layout_height="600dp"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/publSelFoto"
-            android:layout_width="407dp"
-            android:layout_height="262dp"
+            android:layout_width="match_parent"
+            android:layout_height="186dp"
             android:maxWidth="314dp"
             android:maxHeight="358dp"
             android:scaleType="centerCrop"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            android:visibility="visible" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/publSelFotoPerfil"
-            android:layout_width="70dp"
-            android:layout_height="66dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ic_launcher_background"
-            app:civ_border_color="#FFFFFF"
-            app:civ_border_width="2dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/publSelFoto" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/publSelFotoPerfil"
+                android:layout_width="70dp"
+                android:layout_height="66dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_launcher_background"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/publSelNomUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:text="Nombre User"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/publSelPublicacion"
-            android:layout_width="363dp"
+            android:layout_width="match_parent"
             android:layout_height="31dp"
-            android:layout_marginTop="56dp"
             android:paddingLeft="10dp"
             android:text="aca va comentario"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/publSelNomUser"
-            tools:ignore="MissingConstraints" />
+            android:textSize="24sp" />
 
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="411dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
-            android:text="volver"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/_dynamic"
-            tools:ignore="MissingConstraints" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/publSelNomUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:paddingLeft="10dp"
-            android:text="Nombre User"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/publSelFotoPerfil"
-            app:layout_constraintTop_toBottomOf="@+id/publSelFoto" />
+            <EditText
+                android:id="@+id/ETcomentario"
+                android:layout_width="228dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Escribe un comentario"
+                android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/ETcomentario"
-            android:layout_width="228dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name"
-            app:layout_constraintEnd_toStartOf="@+id/btnComentar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/publSelPublicacion" />
+            <Button
+                android:id="@+id/btnComentar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:text="Comentar" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnComentar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:text="Comentar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/publSelPublicacion" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
-        <ListView
-            android:id="@+id/listPublicacionesCom"
-            android:layout_width="390dp"
-            android:layout_height="1200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ETcomentario"
-            app:layout_constraintVertical_bias="0.0" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listPublicacionesCom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="450dp"
+                    android:isScrollContainer="true" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

@@ -20,10 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RedSocial">
-        <activity android:name=".seleccionada2"></activity>
         <activity
-            android:name=".Perfil2"
-            android:label="@string/title_activity_perfil2" />
+            android:name=".PublicacionSeleccionadaScrolling"
+            android:label="@string/title_activity_publicacion_seleccionada_scrolling"
+            android:theme="@style/Theme.RedSocial.NoActionBar"></activity>
+        <activity android:name=".PublicacionSeleccionadaFrag" />
         <activity android:name=".PublcacionSeleccionada" />
         <activity android:name=".Perfil" />
         <activity android:name=".Registrarse" />

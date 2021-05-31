@@ -1,4 +1,4 @@
-package com.example.redsocial.entidades;
+ package com.example.redsocial.entidades;
 
 import android.content.Context;
 import android.view.LayoutInflater;

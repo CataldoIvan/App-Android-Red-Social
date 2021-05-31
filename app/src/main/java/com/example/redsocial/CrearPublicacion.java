@@ -78,8 +78,12 @@ public class CrearPublicacion extends AppCompatActivity {
                 objUser.getNombre()+objUser.getMail(), Toast.LENGTH_LONG).show();*/
         userPubli.setText(objUser.getNombre()+" "+objUser.getApellido());
 
+        if (objUser.getImg_Post()!=null){
+            imagen.setImageBitmap(objUser.getImg_Post());
+        }else {
+            imagen.setImageResource(R.drawable.jeremy_full);
+        }
 
-        imagen.setImageBitmap(objUser.getImg_Post());
 
         // creo ola funcion para cargar imagen
         cargar_img.setOnClickListener(new View.OnClickListener() {

@@ -37,6 +37,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     db.execSQL(Utilidades.CREAR_TABLA_PUBLICACION);
     db.execSQL(Utilidades.CREAR_TABLA_USUARIO);
     db.execSQL(Utilidades.CREAR_TABLA_COMENTARIOS);
+    db.execSQL(Utilidades.CREAR_TABLA_HISTORIA);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS publicaciones");
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS comentarios");
+        db.execSQL("DROP TABLE IF EXISTS historias");
 
     //onCreate(db);
     }
@@ -113,9 +115,14 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 //objUser.setComentario_id(objCursor.getInt(5));
                 //convierto la imagen tipo Blob en ArraByte y luego en Bitmap para pasarlo al objeto
                 byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
-                Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-                objUser.setImg_Post(theImage);
+                if (imagenEnBites!=null){
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
+                    Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+                    objUser.setImg_Post(theImage);
+                }else{
+                    objUser.setImg_Post(null);
+
+                }
 
                 System.out.println("////////////////////////se encontro el usuario: \n" +
                         objUser.getNombre()+"\n"
@@ -133,7 +140,6 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         Publicacion objPubli=null;
         Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM publicaciones c INNER JOIN usuarios u on u.id=c.usuario_id WHERE c.id="+publicacion,null);
        if(objCursor!=null){
-
             while (objCursor.moveToNext()){
                 objPubli= new Publicacion();
                 objPubli.setId(objCursor.getInt(0));
@@ -145,15 +151,17 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 System.out.println("//********///////////// img posty "+objPubli.getImg_Post());
                 objPubli.setUsuario_nombre(objCursor.getString(6));
 
-                byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
-                Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-                objPubli.setUsuario_img_perfil(theImage);
 
+
+                byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
+                if (imagenEnBites!=null){
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
+                    Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+                    objPubli.setUsuario_img_perfil(theImage);
                 }
 
 
-
+                }
             }
         return objPubli;
        }
@@ -164,7 +172,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
 
 
-    /*public void storageimage(Publicacion objPublicacion, ContentValues objContent, @Nullable String nameDB){
+    /*public void storageimage(PublicacionFrag objPublicacion, ContentValues objContent, @Nullable String nameDB){
         SQLiteDatabase objectSqLiteDB=this.getWritableDatabase();
         Bitmap imagenAAlmacenarBitmap=objPublicacion.getImg_Post();
         objectByteArrayOutputStream =new ByteArrayOutputStream();

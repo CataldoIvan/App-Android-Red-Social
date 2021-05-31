@@ -55,6 +55,21 @@ public class Utilidades extends AppCompatActivity {
             "("+CAMPO_COMEN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_COMENTARIO+" TEXT,"
             +CAMPO_COMEN_USERID+" INTEGER,"+CAMPO_COMEN_PUBLIID+" INTEGER,"+CAMPO_COMEN_FECHA+" TEXT)";
 
+    ////////// SE CREA LA TABLA HISTORIAS
+
+
+
+    public static final String TABLA_HISTORIAS="historias";
+    public static final  String CAMPO_HIST_ID="id";
+    public static final  String CAMPO_HIST_USERID="user_id";
+    public static final  String CAMPO_HIST_IMG="imgHist";
+    public static final String CAMPO_HIST_FECHA="fecha";
+
+
+    public static final String CREAR_TABLA_HISTORIA="CREATE TABLE "+TABLA_HISTORIAS+" " +
+            "("+CAMPO_HIST_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_HIST_USERID+" INTEGER,"
+            +CAMPO_HIST_IMG+" TEXT,"+CAMPO_HIST_FECHA+" TEXT)";
+
 
 
 }

@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +27,13 @@ import com.example.redsocial.R;
 import com.example.redsocial.utilidades.Utilidades;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 
 
 public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
@@ -51,6 +57,7 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         View view= LayoutInflater.from(context).inflate(R.layout.card_view_comentarios,null);
 
         Publicacion publicacion=publicacionList.get(position);
+
 
         ImageView imagen=view.findViewById(R.id.publSelFotoPerfil);
         if (publicacion.getUsuario_img_perfil() !=null){
@@ -121,16 +128,59 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
             cardImagen.setVisibility(View.GONE);
         }
 
+        ImageView compartir=view.findViewById(R.id.IVshare);
+        compartir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareContenido(publicacion);
+                }
+        });
+
+
         //imgPost.setImageURI(Uri.fromFile(new File(publicacion.getImg_Post())));
         //System.out.println("////////////////////////////////LA IMAGEN ES DE EEEEEE "+publicacion.getImg_Post());
        //Uri uri=imagenfile.toURI();
        // imgPost.setImageURI(imagenfile.getAbsolutePath());
 
         return view;
+
+
     }
     public static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
+
+    private void shareContenido(Publicacion datos){
+        try {
+            Intent intentoObj=new Intent();
+                intentoObj.setAction(Intent.ACTION_SEND);
+                intentoObj.putExtra(Intent.EXTRA_TEXT,"Usuario : "+datos.getUsuario_nombre()+"\n Comentario de la publicacion: "+datos.getComentario());
+                intentoObj.setType("text/plain");
+                Intent shareInt=Intent.createChooser(intentoObj,null);
+                context.startActivity(shareInt);
+
+           /* ************* INTENTO DE MANDAR IMAGEN ************
+      //   datos.getImg_Post() = /storage/emulated/0/dcim/camera/img_20210502_013359.jpg
+           Bitmap urlAbitmap = BitmapFactory.decodeFile(datos.getImg_Post());
+
+            File file = new File(datos.getImg_Post(),"null");
+            FileOutputStream fOut = new FileOutputStream(file);
+            urlAbitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Intent.EXTRA_TEXT, datos.getImg_Post());
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            intent.setType("image/jpg");
+            context.startActivity(Intent.createChooser(intent, "Share image via"));*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
