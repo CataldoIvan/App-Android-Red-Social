@@ -34,15 +34,17 @@
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/errorPass2"
+            android:id="@+id/errorUsuario"
             android:layout_width="199dp"
             android:layout_height="22dp"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Usuario Incorrecto"
             android:textColor="#F40000"
             android:textStyle="bold"
-            tools:visibility="gone" />
+            android:visibility="invisible"
+            tools:visibility="invisible" />
 
         <EditText
             android:id="@+id/contraseniaLogin"
@@ -52,18 +54,20 @@
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="Contrasenia"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
         <TextView
-            android:id="@+id/errorPass"
+            android:id="@+id/errorContrasena"
             android:layout_width="270dp"
             android:layout_height="21dp"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Usuario o Contrasenia Incorrecta"
             android:textColor="#F40000"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="invisible"
+            tools:visibility="invisible" />
 
         <CheckBox
             android:id="@+id/guardarDatosChBox"

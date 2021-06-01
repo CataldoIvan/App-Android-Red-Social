@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redsocial.entidades.Usuario;
@@ -32,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     Button fragmentbtn;
     CheckBox mantenerSesion;
 
+    TextView errorUsuario;
+    TextView errorContrasena;
+    Boolean sinErrorUsu =false;
+    Boolean sinErrorCont =false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +49,12 @@ public class MainActivity extends AppCompatActivity {
         contraseniaLog=(EditText)findViewById(R.id.contraseniaLogin);
         iniciarS=(Button)findViewById(R.id.iniSesion);
         registrarse=(Button)findViewById(R.id.registrarseBTN);
-        findViewById(R.id.errorPass).setVisibility(View.GONE);
-        findViewById(R.id.errorPass2).setVisibility(View.GONE);
+        findViewById(R.id.errorContrasena).setVisibility(View.GONE);
+        findViewById(R.id.errorUsuario).setVisibility(View.GONE);
         mantenerSesion= (CheckBox) findViewById(R.id.guardarDatosChBox);
+        errorContrasena=(TextView)findViewById(R.id.errorContrasena);
+        errorUsuario=(TextView)findViewById(R.id.errorUsuario);
+
 
         this.conxDB=new ConexionSQLiteHelper(this);
         validarUsuarioxPreferencias();
@@ -60,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         iniciarS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iniciarSesion();
+
+                iniciarSesion(usuarioLog.getText().toString(),contraseniaLog.getText().toString());
 
             }
         });
@@ -83,19 +94,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void iniciarSesion() {
-        ConexionSQLiteHelper conxDB=new ConexionSQLiteHelper(getApplicationContext());
-        Usuario user=conxDB.obtenerDatosUserLog(usuarioLog.getText().toString());
+    private void iniciarSesion(String userIngres,String contraIngres) {
+        restaurarErrores();
+        validarCamposUsuario(userIngres);
+        validarCamposContrasena(userIngres);
+
+
 
         try {
-            if (user!=null){
+            if (sinErrorUsu && sinErrorCont){
+                ConexionSQLiteHelper conxDB=new ConexionSQLiteHelper(getApplicationContext());
+                Usuario user=conxDB.obtenerDatosUserLog(usuarioLog.getText().toString());
                 String value=contraseniaLog.getText().toString();
+                if (user.getUsuario()!=null){
+                    if (user.getContrasenia().equals(value)){
 
-                if (user.getContrasenia().equals(value)){
-
-                    if(mantenerSesion.isChecked()){
-                        guardarPreferencias(user.getMail(),user.getContrasenia());
-                    }
+                        if(mantenerSesion.isChecked()){
+                            guardarPreferencias(user.getUsuario(),user.getContrasenia());
+                        }
 
                     /*Toast.makeText(MainActivity.this, "se encontro el usuario: \n" +
                                     ""+user.getNombre()+"\n"+
@@ -104,24 +120,60 @@ public class MainActivity extends AppCompatActivity {
                                     ""+user.getMail()+"\n"+
                             "Es chequeado esta :"+mantenerSesion.isChecked()+"\n"
                             , Toast.LENGTH_LONG).show();*/
-                    Intent intento=new Intent(MainActivity.this,Inicio.class);
-                    Utilidades.USER_LOGUEADO=user.getId();
-                    startActivity(intento);
-                }else {
-                    findViewById(R.id.errorPass).setVisibility(View.VISIBLE);
+                        Intent intento=new Intent(MainActivity.this,Inicio.class);
+                        Utilidades.USER_LOGUEADO=user.getId();
+                        startActivity(intento);
+                    }else {
+                        errorContrasena.setText("La contrasenia es incorrecta");
+                        errorContrasena.setVisibility(View.VISIBLE);
+
+                    }
+
+                }   else{
+                    errorUsuario.setText("El usuario no registrado");
+                    errorUsuario.setVisibility(View.VISIBLE);
                 }
             }else {
-                findViewById(R.id.errorPass2).setVisibility(View.VISIBLE);
+                findViewById(R.id.errorUsuario).setVisibility(View.VISIBLE);
             }
         }catch(Exception e){
-            Toast.makeText(MainActivity.this, ""+e, Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "aca esta haciednolo"+e, Toast.LENGTH_LONG).show();
+            System.out.println("********** error de "+e);
             //findViewById(R.id.errorPass2).setVisibility(View.VISIBLE);
-            findViewById(R.id.errorPass).setVisibility(View.VISIBLE);
+            findViewById(R.id.errorContrasena).setVisibility(View.VISIBLE);
         }
 
                 /*Intent intento=new Intent(MainActivity.this,Inicio.class);
                 intento.putExtra("usu", usuarioLog.getText().toString());
                 startActivity(intento);*/
+
+    }
+
+    private void restaurarErrores() {
+        sinErrorCont=false;
+        sinErrorUsu=false;
+        errorContrasena.setVisibility(View.INVISIBLE);
+        errorUsuario.setVisibility(View.INVISIBLE);
+    }
+
+    private void validarCamposContrasena(String contrasena) {
+        if ( !contrasena.equals("")){
+            sinErrorCont =true;
+        }else {
+            errorContrasena.setText("El campo no púede esta vacio");
+            errorContrasena.setVisibility(View.VISIBLE);
+            sinErrorCont =false;
+        }
+    }
+
+    private void validarCamposUsuario(String user) {
+        if (!user.equals("")){
+            sinErrorUsu =true;
+        }else {
+            errorUsuario.setText("El campo no púede esta vacio");
+            errorUsuario.setVisibility(View.VISIBLE);
+            sinErrorUsu =false;
+        }
 
     }
 
@@ -134,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         if ( user!=null && pass!=null ){
             usuarioLog.setText(user);
             contraseniaLog.setText(pass);
-            iniciarSesion();
+            iniciarSesion(usuarioLog.getText().toString(),contraseniaLog.getText().toString());
         }
 
 

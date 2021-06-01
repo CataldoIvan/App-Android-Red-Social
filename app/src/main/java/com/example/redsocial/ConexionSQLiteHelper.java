@@ -76,25 +76,32 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 objUser.setContrasenia(objCursor.getString(objCursor.getColumnIndex("contrasenia")));
                 //objUser.setComentario_id(objCursor.getInt(5));
                 //convierto la imagen tipo Blob en ArraByte y luego en Bitmap para pasarlo al objeto
-                try{if (objCursor.getBlob(objCursor.getColumnIndex("img_perfil"))!=null){
-                    byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
-                    ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
-                    Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-                    objUser.setImg_Post(theImage);
-                }else{
+                try{
+                    if (objCursor.getBlob(objCursor.getColumnIndex("img_perfil"))!=null){
+                        byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
+                        ByteArrayInputStream imageStream = new ByteArrayInputStream(imagenEnBites);
+                        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+                        objUser.setImg_Post(theImage);
+                     }else{
 
-                }
+                     }
                 }catch (Exception e){
                     System.out.println("///////////// error de carga foto perfil"+e);
                 }
-
-
 
                 System.out.println("////////////////////////se encontro el usuario: \n" +
                         objUser.getNombre()+"\n"
                         +objUser.getMail()+"\n");
             }
 
+        }else {
+            objUser.setId(null);
+            objUser.setNombre(null);
+            objUser.setApellido(null);
+            objUser.setUsuario(null);
+            objUser.setMail(null);
+            objUser.setContrasenia(null);
+            return objUser;
         }
 
         return objUser;
