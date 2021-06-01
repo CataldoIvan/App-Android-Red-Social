@@ -28,13 +28,14 @@ public class Utilidades extends AppCompatActivity {
     public static final  String CAMPO_USER_ID="id";
     public static final  String CAMPO_USER_NOMBRE="nombre";
     public static final String CAMPO_USER_APELLIDO="apellido";
-    public static final String CAMPO_USER_MAIL="correo";
+    public static final String CAMPO_USER_USUARIO ="usuario";
+    public static final String CAMPO_CORREO_USUARIO ="correo";
     public static final String CAMPO_USER_CONTRAS="contrasenia";
     public static final  String CAMPO_COMENT_ID="comentario_id";
     public static final  String CAMPO_IMG_PERFIL="img_perfil";
     public static final String CREAR_TABLA_USUARIO="CREATE TABLE "+TABLA_USUARIOS+" " +
             "("+CAMPO_USER_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+CAMPO_USER_NOMBRE+" TEXT,"
-            +CAMPO_USER_APELLIDO+" TEXT,"+CAMPO_USER_MAIL+" TEXT,"+CAMPO_USER_CONTRAS+" TEXT,"
+            +CAMPO_USER_APELLIDO+" TEXT,"+ CAMPO_USER_USUARIO +" TEXT,"+ CAMPO_CORREO_USUARIO +" TEXT,"+CAMPO_USER_CONTRAS+" TEXT,"
         +CAMPO_COMENT_ID+" INTEGER,"+CAMPO_IMG_PERFIL+" BLOB)";
 
    /* private Integer id;

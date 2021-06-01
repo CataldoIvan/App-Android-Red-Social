@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         usuarioLog=(EditText)findViewById(R.id.usuarioLogin);
         contraseniaLog=(EditText)findViewById(R.id.contraseniaLogin);
         SharedPreferences preferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String user=preferences.getString(Utilidades.CAMPO_USER_MAIL,null);
+        String user=preferences.getString(Utilidades.CAMPO_USER_USUARIO,null);
         String pass=preferences.getString(Utilidades.CAMPO_USER_CONTRAS,null);
         if ( user!=null && pass!=null ){
             usuarioLog.setText(user);
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor=preferences.edit();
-        editor.putString(Utilidades.CAMPO_USER_MAIL,usuario);
+        editor.putString(Utilidades.CAMPO_USER_USUARIO,usuario);
         editor.putString(Utilidades.CAMPO_USER_CONTRAS,contra);
         editor.commit();
 

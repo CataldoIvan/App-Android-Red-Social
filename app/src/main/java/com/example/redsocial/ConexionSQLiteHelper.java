@@ -64,13 +64,14 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     public Usuario obtenerDatosUserLog(String usuario){
         SQLiteDatabase objSQLdb=this.getReadableDatabase();
         Usuario objUser=new Usuario();
-        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIOS+" WHERE "+Utilidades.CAMPO_USER_MAIL+"='"+usuario+"'",null);
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIOS+" WHERE "+Utilidades.CAMPO_USER_USUARIO +"='"+usuario+"'",null);
         if(objCursor!=null){
             while (objCursor.moveToNext()){
 
                 objUser.setId(objCursor.getInt(objCursor.getColumnIndex("id")));
                 objUser.setNombre(objCursor.getString(objCursor.getColumnIndex("nombre")));
                 objUser.setApellido(objCursor.getString(objCursor.getColumnIndex("apellido")));
+                objUser.setUsuario(objCursor.getString(objCursor.getColumnIndex("usuario")));
                 objUser.setMail(objCursor.getString(objCursor.getColumnIndex("correo")));
                 objUser.setContrasenia(objCursor.getString(objCursor.getColumnIndex("contrasenia")));
                 //objUser.setComentario_id(objCursor.getInt(5));
@@ -110,6 +111,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 objUser.setId(objCursor.getInt(objCursor.getColumnIndex("id")));
                 objUser.setNombre(objCursor.getString(objCursor.getColumnIndex("nombre")));
                 objUser.setApellido(objCursor.getString(objCursor.getColumnIndex("apellido")));
+                objUser.setUsuario(objCursor.getString(objCursor.getColumnIndex("usuario")));
                 objUser.setMail(objCursor.getString(objCursor.getColumnIndex("correo")));
                 objUser.setContrasenia(objCursor.getString(objCursor.getColumnIndex("contrasenia")));
                 //objUser.setComentario_id(objCursor.getInt(5));

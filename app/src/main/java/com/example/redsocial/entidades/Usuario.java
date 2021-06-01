@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    private String nombre,apellido,mail,contrasenia;
+    private String nombre,apellido,mail,contrasenia,usuario;
     private Integer id,comentario_id;
     private Bitmap img_Post;
 
@@ -13,11 +13,20 @@ public class Usuario implements Serializable {
 
     }
 
-    public Usuario(String nombre, String apellido, String mail, String contrasenia) {
+    public Usuario(String nombre, String apellido, String mail, String contrasenia,String user) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
         this.contrasenia = contrasenia;
+        this.usuario=user;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getNombre() {
