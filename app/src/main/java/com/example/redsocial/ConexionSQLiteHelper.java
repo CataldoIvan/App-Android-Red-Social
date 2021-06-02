@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
 
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imagenInBytes;

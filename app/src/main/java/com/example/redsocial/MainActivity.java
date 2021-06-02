@@ -1,5 +1,6 @@
 package com.example.redsocial;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +19,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
+
+import java.util.concurrent.Executor;
 
 import static java.lang.Integer.parseInt;
 
@@ -37,7 +42,13 @@ public class MainActivity extends AppCompatActivity {
     TextView errorContrasena;
     Boolean sinErrorUsu =false;
     Boolean sinErrorCont =false;
+/*
 
+    //huelladigital
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +101,33 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+     /*   executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Ingresa con tu huella digital")
+                //.setSubtitle("Log in using your biometric credential")
+                .setNegativeButtonText("CANCELAR")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);*/
     }
 
 

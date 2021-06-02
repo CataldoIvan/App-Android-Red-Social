@@ -6,7 +6,7 @@ public class Utilidades extends AppCompatActivity {
 
     public static  Integer LOGUEADO;
 
-    public static final String NOMBRE_DB="db_redSocial";
+    public static final String NOMBRE_DB="db_RedSocial";
     public static Integer USER_LOGUEADO;
 
     public static final String TABLA_PUBLICAIONES ="publicaciones";
@@ -38,11 +38,6 @@ public class Utilidades extends AppCompatActivity {
             +CAMPO_USER_APELLIDO+" TEXT,"+ CAMPO_USER_USUARIO +" TEXT,"+ CAMPO_CORREO_USUARIO +" TEXT,"+CAMPO_USER_CONTRAS+" TEXT,"
         +CAMPO_COMENT_ID+" INTEGER,"+CAMPO_IMG_PERFIL+" BLOB)";
 
-   /* private Integer id;
-    private String comentario;
-    private Integer user_id;
-    private Integer publicacion_id;
-    private Object fecha*/
 
     ////////// SE CREA LA TABLA COMENTARIOS
     public static final String TABLA_COMENTARIOS="comentarios";
@@ -57,8 +52,6 @@ public class Utilidades extends AppCompatActivity {
             +CAMPO_COMEN_USERID+" INTEGER,"+CAMPO_COMEN_PUBLIID+" INTEGER,"+CAMPO_COMEN_FECHA+" TEXT)";
 
     ////////// SE CREA LA TABLA HISTORIAS
-
-
 
     public static final String TABLA_HISTORIAS="historias";
     public static final  String CAMPO_HIST_ID="id";

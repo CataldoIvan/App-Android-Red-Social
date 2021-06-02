@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import org.w3c.dom.ls.LSOutput;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 
@@ -154,12 +156,41 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
 
     private void shareContenido(Publicacion datos){
         try {
-            Intent intentoObj=new Intent();
+            if (datos.getImg_Post()!=null){
+                /*Bitmap bitmap= BitmapFactory.decodeFile(datos.getImg_Post());
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/Share.png";
+                OutputStream out = null;
+                File file=new File(path);
+                try {
+                    out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                path=file.getPath();
+                Uri bmpUri = Uri.parse("file://"+path);*/
+                Uri pictureUri = Uri.parse(datos.getImg_Post());
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Usuario : "+datos.getUsuario_nombre()+"\n Comentario de la publicacion: "+datos.getComentario());
+                shareIntent.putExtra(Intent.EXTRA_STREAM, pictureUri);
+                shareIntent.setType("image/*");
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                context.startActivity(Intent.createChooser(shareIntent, "Compartir publicacion con"));
+
+            }else{
+                Intent intentoObj=new Intent();
                 intentoObj.setAction(Intent.ACTION_SEND);
                 intentoObj.putExtra(Intent.EXTRA_TEXT,"Usuario : "+datos.getUsuario_nombre()+"\n Comentario de la publicacion: "+datos.getComentario());
                 intentoObj.setType("text/plain");
                 Intent shareInt=Intent.createChooser(intentoObj,null);
                 context.startActivity(shareInt);
+            }
+
+
+
 
            /* ************* INTENTO DE MANDAR IMAGEN ************
       //   datos.getImg_Post() = /storage/emulated/0/dcim/camera/img_20210502_013359.jpg
