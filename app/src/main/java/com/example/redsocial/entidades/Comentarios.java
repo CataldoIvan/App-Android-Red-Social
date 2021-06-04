@@ -1,5 +1,7 @@
 package com.example.redsocial.entidades;
 
+import android.graphics.Bitmap;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeoutException;
@@ -10,6 +12,8 @@ public class Comentarios {
     private Integer user_id;
     private Integer publicacion_id;
     private Object fecha;
+    private String usuario_nombre;
+    private Bitmap usuario_img_perfil;
 
     public Comentarios() {
     }
@@ -20,6 +24,22 @@ public class Comentarios {
         this.user_id = user_id;
         this.publicacion_id = publicacion_id;
         this.fecha= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+    }
+
+    public String getUsuario_nombre() {
+        return usuario_nombre;
+    }
+
+    public void setUsuario_nombre(String usuario_nombre) {
+        this.usuario_nombre = usuario_nombre;
+    }
+
+    public Bitmap getUsuario_img_perfil() {
+        return usuario_img_perfil;
+    }
+
+    public void setUsuario_img_perfil(Bitmap usuario_img_perfil) {
+        this.usuario_img_perfil = usuario_img_perfil;
     }
 
     public Integer getId() {

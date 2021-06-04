@@ -65,10 +65,9 @@ public class PublcacionSeleccionada extends AppCompatActivity {
     AlertDialog.Builder dialogBuilder;
     AlertDialog dialog;
 
+    ListaComentarioskFragment listaComentarioskFragment;
 
-
-
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +82,23 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         agregarComen = (Button) findViewById(R.id.btnComentar);
         comentarioText = (EditText) findViewById(R.id.ETcomentario);
         //mListView=findViewById(R.id.listPublicacionesCom);
+        try {
+            //Manjeo de Fragment
+            listaComentarioskFragment = new ListaComentarioskFragment();
+            Bundle datosIdComent = new Bundle();
+            datosIdComent.putInt("idComentario", (Integer) getIntent().getSerializableExtra("postSelect"));
+            listaComentarioskFragment.setArguments(datosIdComent);
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView4, listaComentarioskFragment).commit();
+        }catch (Exception e){
+            System.out.println("error en crear frament"+e);
+        }
 
         try {
              intent = (Integer) getIntent().getSerializableExtra("postSelect");
 
              pub = conxDB.obtenerDatosPublicacionPorId(intent);
 
-            System.out.println("ppppppppppppppppppppppppppp" + pub.getId());
+            //System.out.println("ppppppppppppppppppppppppppp" + pub.getId());
             Publicacion.setText(pub.getComentario());
             nombreUser.setText("id:" + pub.getId() + " - " + pub.getUsuario_nombre());
             if (pub.getUsuario_img_perfil()!=null){
@@ -139,7 +148,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
 
 
 
-     /*   agregarComen.setOnClickListener(new View.OnClickListener() {
+      agregarComen.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
@@ -151,7 +160,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             }
         });
 
-        try {
+       /*   try {
             consultarBaseComentarios();
             if(!mListComentarios.isEmpty() && mListComentarios!=null){
                 mAdapter=new ComentarioAdaptador(PublcacionSeleccionada.this,R.layout.fila_comentario,mListComentarios);
@@ -207,7 +216,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             comentObj.setPublicacion_id(cursor.getInt(3));
             comentObj.setFecha(cursor.getString(4));
 
-            System.out.println("comentariooooooo ///////////**********"+comentObj.getComentario());
+            //System.out.println("comentariooooooo *"+comentObj.getComentario());
 
 
             mListComentarios.add(comentObj);

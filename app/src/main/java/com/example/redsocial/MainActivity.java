@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Utilidades.USER_LOGUEADO=0;
 
         fragmentbtn=findViewById(R.id.irFragment);
         usuarioLog=(EditText)findViewById(R.id.usuarioLogin);

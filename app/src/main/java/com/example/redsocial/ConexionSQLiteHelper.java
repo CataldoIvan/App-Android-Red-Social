@@ -112,7 +112,6 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         Usuario objUser=new Usuario();
         Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIOS+" WHERE "+Utilidades.CAMPO_USER_ID+"="+usuario,null);
         if(objCursor!=null){
-
             while (objCursor.moveToNext()){
 
                 objUser.setId(objCursor.getInt(objCursor.getColumnIndex("id")));

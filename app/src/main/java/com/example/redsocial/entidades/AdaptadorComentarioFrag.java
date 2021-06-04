@@ -3,11 +3,13 @@ package com.example.redsocial.entidades;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.redsocial.ConexionSQLiteHelper;
 import com.example.redsocial.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +23,7 @@ View.OnClickListener{
 
     ArrayList<Comentarios> listaComentario;
     private View.OnClickListener listener;
+
     public AdaptadorComentarioFrag(ArrayList<Comentarios> listaComentario) {
         this.listaComentario = listaComentario;
     }
@@ -35,8 +38,10 @@ View.OnClickListener{
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ComentarioViewHolder holder, int position) {
-        holder.txtNombre.setText(listaComentario.get(position).getUser_id().toString());
+
+        holder.txtNombre.setText(listaComentario.get(position).getUsuario_nombre());
         holder.txtComentario.setText(listaComentario.get(position).getComentario());
+        holder.IVimgUser.setImageBitmap(listaComentario.get(position).getUsuario_img_perfil());
     }
 
     @Override
@@ -58,11 +63,13 @@ View.OnClickListener{
 
     public class  ComentarioViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre,txtComentario;
-        //falta la foto
+        ImageView IVimgUser;
         public ComentarioViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             txtNombre=(TextView)itemView.findViewById(R.id.textView5);
             txtComentario=(TextView)itemView.findViewById(R.id.TVcomentarioContenido);
+
+             IVimgUser=(ImageView)itemView.findViewById(R.id.imgUsuComentarioIV);
         }
     }
 }
