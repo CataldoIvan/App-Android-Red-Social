@@ -156,22 +156,35 @@ public class Registrarse extends AppCompatActivity {
         if (!user.equals("") && !user.equals(null)&& !user.equals(" ")){
 
             if (user.length()>3){
-                try {
+                ConexionSQLiteHelper conxDB_user=new ConexionSQLiteHelper(this);
+                if (!conxDB_user.elUsuarioExiste(user)){
+                    return true;
+                }else {
+                    errorUsuario.setText("El usuario ingresado ya existe");
+                    errorUsuario.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+
+                /*try {
                     ConexionSQLiteHelper conxDB_user=new ConexionSQLiteHelper(this);
+                    conxDB_user.elUsuarioExiste(user);
                     SQLiteDatabase objSQLdb=conxDB_user.getReadableDatabase();
                     Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIOS+" WHERE "+Utilidades.CAMPO_USER_USUARIO+"="+user+"",null);
                     if(objCursor==null){
                         return true;
                     }else{
-                        errorCorreo.setText("El usuario ingresado ya existe");
-                        errorCorreo.setVisibility(View.VISIBLE);
+                        errorUsuario.setText("El usuario ingresado ya existe");
+                        errorUsuario.setVisibility(View.VISIBLE);
                         return false;
 
                     }
                 }catch (Exception e){
                     System.out.println("error al consultar es "+e);
-                    return true;
-                }
+                    errorUsuario.setText("El usuario ingresado ya existe");
+                    errorUsuario.setVisibility(View.VISIBLE);
+                    return false;
+                }*/
 
             }else {
                 errorUsuario.setText("El usuario debe contener al menos 4 digitos");

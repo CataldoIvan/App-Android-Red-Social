@@ -41,7 +41,12 @@ View.OnClickListener{
 
         holder.txtNombre.setText(listaComentario.get(position).getUsuario_nombre());
         holder.txtComentario.setText(listaComentario.get(position).getComentario());
-        holder.IVimgUser.setImageBitmap(listaComentario.get(position).getUsuario_img_perfil());
+        if (listaComentario.get(position).getUsuario_img_perfil()!=null){
+            holder.IVimgUser.setImageBitmap(listaComentario.get(position).getUsuario_img_perfil());
+        }else {
+            holder.IVimgUser.setImageResource(R.drawable.jeremy_full);
+        }
+
     }
 
     @Override
@@ -68,7 +73,6 @@ View.OnClickListener{
             super(itemView);
             txtNombre=(TextView)itemView.findViewById(R.id.textView5);
             txtComentario=(TextView)itemView.findViewById(R.id.TVcomentarioContenido);
-
              IVimgUser=(ImageView)itemView.findViewById(R.id.imgUsuComentarioIV);
         }
     }

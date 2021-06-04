@@ -2,8 +2,6 @@ package com.example.redsocial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,20 +13,26 @@ import static java.lang.Integer.parseInt;
 
 public class Perfil extends AppCompatActivity {
 
-    ImageView imgPerfil;
-    TextView hola;
+    ImageView imgPerfil,imgPortada;
+    TextView correo,nombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-        hola=(TextView) findViewById(R.id.textView4);
-        imgPerfil=(ImageView) findViewById(R.id.imageView3);
+        correo=(TextView) findViewById(R.id.correoUserPerfilTV);
+        nombre=(TextView) findViewById(R.id.nombreUserPerfil);
+        imgPerfil=(ImageView) findViewById(R.id.imgPerfilenPerfilIV);
+        imgPortada=(ImageView) findViewById(R.id.portadaIV);
 
-        hola.setText("Hola usuario>"+getIntent().getStringExtra("usuarioNro"));
+
 
         ConexionSQLiteHelper conx=new ConexionSQLiteHelper(getApplicationContext());
-        Publicacion user=conx.obtenerDatosPublicacionPorId(parseInt(getIntent().getStringExtra("usuarioNro")));
-        imgPerfil.setImageBitmap(user.getUsuario_img_perfil());
+        Usuario user=conx.obtenerDatosUserForId(parseInt(getIntent().getStringExtra("usuarioNro")));
+        imgPerfil.setImageBitmap(user.getImg_Post());
+        imgPortada.setImageResource(R.drawable.jeremy_full);
+        correo.setText(user.getMail());
+        nombre.setText(user.getNombre()+" "+user.getApellido());
+
     }
 }

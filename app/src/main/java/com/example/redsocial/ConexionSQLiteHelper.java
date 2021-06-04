@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -130,17 +131,33 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 }else{
                     objUser.setImg_Post(null);
 
-                }
-
-                System.out.println("////////////////////////se encontro el usuario: \n" +
+                }               /* System.out.println("////////////////////////se encontro el usuario: \n" +
                         objUser.getNombre()+"\n"
-                        +objUser.getMail()+"\n");
-            }
+                        +objUser.getMail()+"\n");*/
+           }
 
+        }else{
+            objUser=null;
         }
-
         return objUser;
+
     }
+    public Boolean elUsuarioExiste(String usuario){
+        SQLiteDatabase objSQLdb=this.getReadableDatabase();
+        Boolean retorno=false;
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM "+Utilidades.TABLA_USUARIOS+" WHERE "+Utilidades.CAMPO_USER_USUARIO+"='"+usuario+"'",null);
+        if (objCursor.moveToNext()) { //Si el cursor tiene un registro, quiere decir que ya existe.
+            retorno=true;
+        } else {
+            retorno=false;
+        }
+        objCursor.close(); //Cerramos nuestro cursor
+        objSQLdb.close(); //Cerramos nuestro el db
+
+        return retorno;
+    }
+
+
 
     public Publicacion obtenerDatosPublicacionPorId(Integer publicacion){
 

@@ -39,7 +39,7 @@ public class ListaComentarioskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            idComentSeleccionado=getArguments().getInt("idComentario",-1);
+            idComentSeleccionado=getArguments().getInt("idComentario");
         }
     }
 
@@ -84,11 +84,11 @@ public class ListaComentarioskFragment extends Fragment {
             comentObj.setFecha(cursor.getString(cursor.getColumnIndex(Utilidades.CAMPO_COMEN_FECHA)));
 
             ConexionSQLiteHelper conxObj=new ConexionSQLiteHelper(getContext());
-            Usuario user=conxObj.obtenerDatosUserForId(cursor.getColumnIndex(Utilidades.CAMPO_COMEN_USERID));
+            Usuario user=conxObj.obtenerDatosUserForId(comentObj.getUser_id());
             comentObj.setUsuario_nombre(user.getNombre()+" "+user.getApellido());
             comentObj.setUsuario_img_perfil(user.getImg_Post());
 
-            System.out.println("comentariooooooo ///////////**********" + comentObj.getComentario());
+           // System.out.println("comentariooooooo ///////////**********" + comentObj.getComentario());
             listaComentarios.add(comentObj);
 
         }
