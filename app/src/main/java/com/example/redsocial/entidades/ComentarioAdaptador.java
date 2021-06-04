@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,20 +26,14 @@ public class ComentarioAdaptador extends ArrayAdapter<Comentarios> {
         this.context=context;
         this.comentariosList= objects;
         this.resourseLayaout=resource;
-
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view= LayoutInflater.from(context).inflate(R.layout.fila_comentario,null);
-
         Comentarios comentObj=comentariosList.get(position);
-
         TextView TVcomentario=view.findViewById(R.id.TVcomentarioContenido);
-
         TVcomentario.setText(comentObj.getComentario());
-
         return view;
     }
 }

@@ -1,10 +1,12 @@
 package com.example.redsocial;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +16,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.redsocial.entidades.ComentarioAdaptador;
 import com.example.redsocial.entidades.Comentarios;
@@ -58,6 +62,8 @@ public class PublcacionSeleccionada extends AppCompatActivity {
     List<Comentarios> mListComentarios=null;
     ListAdapter mAdapter;
 
+    AlertDialog.Builder dialogBuilder;
+    AlertDialog dialog;
 
 
 
@@ -76,7 +82,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         //comentario
         agregarComen = (Button) findViewById(R.id.btnComentar);
         comentarioText = (EditText) findViewById(R.id.ETcomentario);
-        mListView=findViewById(R.id.listPublicacionesCom);
+        //mListView=findViewById(R.id.listPublicacionesCom);
 
         try {
              intent = (Integer) getIntent().getSerializableExtra("postSelect");
@@ -133,12 +139,15 @@ public class PublcacionSeleccionada extends AppCompatActivity {
 
 
 
-        agregarComen.setOnClickListener(new View.OnClickListener() {
+     /*   agregarComen.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 agregarComentario();
+               // ventanaEmergenteComentarios();
 
+
+                
             }
         });
 
@@ -146,12 +155,14 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             consultarBaseComentarios();
             if(!mListComentarios.isEmpty() && mListComentarios!=null){
                 mAdapter=new ComentarioAdaptador(PublcacionSeleccionada.this,R.layout.fila_comentario,mListComentarios);
+
                 mListView.setAdapter(mAdapter);
+
             }
         }catch (Exception e){
             System.out.println("EL ERROPR  DEL ADAPTER DE COMENTARIOS ES :"+e);
         }
-
+*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -202,6 +213,30 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             mListComentarios.add(comentObj);
 
         }
+    }
+
+    private void ventanaEmergenteComentarios() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        for (int i=0;i<5;i++){
+            View view1 = inflater.inflate(R.layout.listado,null );
+            TextView nombre=(TextView) view1.findViewById(R.id.textView6);
+            TextView comentario=(TextView) view1.findViewById(R.id.TVcomentarioContenido);
+            nombre.setText("puto"+i);
+
+            dialogBuilder.setView(view1);
+
+        }
+        dialog=dialogBuilder.create();
+        dialog.show();
+
+        /*Toast toas = new Toast(this);
+        toas.setView(view1);
+        toas.setDuration(Toast.LENGTH_LONG);
+        toas.show();
+*/
     }
 
 

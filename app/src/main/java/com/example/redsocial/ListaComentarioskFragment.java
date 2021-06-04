@@ -1,5 +1,6 @@
 package com.example.redsocial;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -82,8 +83,10 @@ public class ListaComentarioskFragment extends Fragment {
         listaComentarios=new ArrayList<>();
         recycleComentario=vista.findViewById(R.id.recyclerId);
         recycleComentario.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        @SuppressLint("ResourceType") View v=container.findViewById(R.layout.activity_publcacion_seleccionada);
+        v.getId();
         llenarListaPrueba();
+
 
         AdaptadorComentarioFrag adapter=new AdaptadorComentarioFrag(listaComentarios);
 

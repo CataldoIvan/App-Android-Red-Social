@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.hardware.biometrics.BiometricPrompt;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.biometric.BiometricPrompt;
 
 import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
@@ -42,13 +42,11 @@ public class MainActivity extends AppCompatActivity {
     TextView errorContrasena;
     Boolean sinErrorUsu =false;
     Boolean sinErrorCont =false;
-/*
 
     //huelladigital
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         this.conxDB=new ConexionSQLiteHelper(this);
-        validarUsuarioxPreferencias();
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.RECORD_AUDIO}, 0);
         }
+
 
         iniciarS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,30 +95,38 @@ public class MainActivity extends AppCompatActivity {
         fragmentbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intento=new Intent(getApplicationContext(), PublicacionSeleccionadaScrolling.class);
-                startActivity(intento);
+
+              /* Intent intento=new Intent(getApplicationContext(), PublicacionSeleccionadaScrolling.class);
+                startActivity(intento);*/
 
             }
         });
 
-     /*   executor = ContextCompat.getMainExecutor(this);
+        executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
+                validarUsuarioxPreferencias();
+                Toast.makeText(MainActivity.this, "El sistema no cuenta sistema de Huella"+errString, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
+                Toast.makeText(MainActivity.this, "Huella confirmada con exito...", Toast.LENGTH_LONG).show();
+                validarUsuarioxPreferencias();
+
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
+                Toast.makeText(MainActivity.this, "La huella no es la correcta!", Toast.LENGTH_LONG).show();
             }
         });
+
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Ingresa con tu huella digital")
@@ -127,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButtonText("CANCELAR")
                 .build();
 
-        biometricPrompt.authenticate(promptInfo);*/
+        biometricPrompt.authenticate(promptInfo);
+
     }
 
 

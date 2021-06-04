@@ -7,17 +7,44 @@
     android:orientation="vertical"
     android:overScrollMode="ifContentScrolls"
     tools:context=".Inicio"
-    android:background="@color/purple_200">
+    android:background="@color/grey">
 
 
-    <Button
-        android:id="@+id/nuevaPubliBTN"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="crear publicacion" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nuevaPubliBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="crear publicacion" />
+
+        <Button
+            android:id="@+id/historyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Historias" />
+
+        <Button
+            android:id="@+id/userBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Perfil" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listadoPost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp">
+
+    </ListView>
+
 </LinearLayout>

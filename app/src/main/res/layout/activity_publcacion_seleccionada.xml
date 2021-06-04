@@ -3,107 +3,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="1080dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PublcacionSeleccionada">
 
     <LinearLayout
-        android:layout_width="423dp"
-        android:layout_height="600dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/publSelFoto"
-            android:layout_width="match_parent"
-            android:layout_height="186dp"
-            android:maxWidth="314dp"
-            android:maxHeight="358dp"
-            android:scaleType="centerCrop"
-            android:visibility="visible" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="89dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/publSelFotoPerfil"
-                android:layout_width="70dp"
-                android:layout_height="66dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/ic_launcher_background"
-                app:civ_border_color="#FFFFFF"
-                app:civ_border_width="2dp" />
-
-            <TextView
-                android:id="@+id/publSelNomUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
-                android:clickable="true"
-                android:paddingLeft="10dp"
-                android:text="Nombre User"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/publSelPublicacion"
-            android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:paddingLeft="10dp"
-            android:text="aca va comentario"
-            android:textSize="24sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/ETcomentario"
-                android:layout_width="228dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:ems="10"
-                android:hint="Escribe un comentario"
-                android:inputType="textPersonName" />
-
-            <Button
-                android:id="@+id/btnComentar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:text="Comentar" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/publSelFoto"
+                android:layout_width="match_parent"
+                android:layout_height="186dp"
+                android:maxWidth="314dp"
+                android:maxHeight="358dp"
+                android:scaleType="centerCrop"
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <ListView
-                    android:id="@+id/listPublicacionesCom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="450dp"
-                    android:isScrollContainer="true" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/publSelFotoPerfil"
+                    android:layout_width="70dp"
+                    android:layout_height="66dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_launcher_background"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="2dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="119dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/publSelNomUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="20dp"
+                        android:clickable="true"
+                        android:paddingLeft="10dp"
+                        android:text="Nombre User"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/publSelPublicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="61dp"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="10dp"
+                        android:text="aca va comentario"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
             </LinearLayout>
-        </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/ETcomentario"
+                    android:layout_width="228dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:hint="Escribe un comentario"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/btnComentar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginRight="24dp"
+                    android:text="Comentar" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView4"
+            android:name="com.example.redsocial.ListaComentarioskFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
