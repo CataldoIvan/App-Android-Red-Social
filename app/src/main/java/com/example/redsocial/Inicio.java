@@ -31,6 +31,7 @@ public class Inicio extends AppCompatActivity {
 
     TextView msj;
     Button nuevaPubli;
+    Button irAPerfil;
     ListView mListView;
     List<Publicacion> mListPublicacion;
     ArrayList<String> mListInformacion=new ArrayList<>();
@@ -45,6 +46,7 @@ public class Inicio extends AppCompatActivity {
 
         conxDB=new ConexionSQLiteHelper(this);
         nuevaPubli=(Button)findViewById(R.id.nuevaPubliBTN);
+        irAPerfil=(Button)findViewById(R.id.userBtn);
         mListView=findViewById(R.id.listadoPost);
 
         ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
@@ -77,6 +79,14 @@ public class Inicio extends AppCompatActivity {
                                 "path imagen:"+mListPublicacion.get(position).getImg_Post()
                         , Toast.LENGTH_LONG).show();*/
 
+            }
+        });
+        irAPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intento= new Intent(getApplicationContext(),Perfil.class);
+                intento.putExtra("usuarioNro",Utilidades.USER_LOGUEADO.toString());
+                startActivity(intento);
             }
         });
 

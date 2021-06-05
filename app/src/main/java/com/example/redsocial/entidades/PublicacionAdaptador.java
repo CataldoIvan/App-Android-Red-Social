@@ -228,7 +228,7 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         contadorPublicaciones=0;
         conxDB=new ConexionSQLiteHelper(getContext());
         SQLiteDatabase db=conxDB.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PUBLICAIONES +" WHERE "+ Utilidades.CAMPO_USUARIOID+" = "+idPublicacion+ " ;", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMENTARIOS +" WHERE "+ Utilidades.CAMPO_COMEN_PUBLIID+" = "+idPublicacion+ " ;", null);
 
         while(cursor.moveToNext()){
             contadorPublicaciones+=1;

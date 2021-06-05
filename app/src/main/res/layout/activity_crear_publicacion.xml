@@ -1,97 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CrearPublicacion">
 
-    <TextView
-        android:id="@+id/userPubliTV"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="21dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="114dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_launcher_background"
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.452"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="114dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_launcher_background"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="2dp" />
 
-    <EditText
-        android:id="@+id/textPubliET"
-        android:layout_width="307dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="12dp"
-        android:ems="16"
-        android:gravity="top|left"
-        android:hint="Escriba su publicacion"
-        android:inputType="textMultiLine"
-        android:maxLength="75"
-        app:layout_constraintBottom_toTopOf="@+id/cargarImgBTN"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPubliTV" />
+        <TextView
+            android:id="@+id/userPubliTV"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/tomarFotoBNT"
-        android:layout_width="143dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="60dp"
-        android:text="Tomar Foto"
-        app:layout_constraintBottom_toTopOf="@+id/crearPubliBTN"
-        app:layout_constraintStart_toStartOf="@+id/cargarImgBTN" />
+        <EditText
+            android:id="@+id/textPubliET"
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:ems="16"
+            android:gravity="top|left"
+            android:hint="Escriba su publicacion"
+            android:inputType="textMultiLine"
+            android:maxLength="75" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="153dp"
-        android:layout_height="144dp"
-        android:layout_marginBottom="44dp"
-        app:layout_constraintBottom_toTopOf="@+id/crearPubliBTN"
-        app:layout_constraintEnd_toStartOf="@+id/cargarImgBTN"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardCornerRadius="25dp">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="149dp"
-            android:layout_height="144dp"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
-    </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/crearPubliBTN"
-        android:layout_width="411dp"
-        android:layout_height="71dp"
-        android:layout_marginBottom="108dp"
-        android:text="Crear Publicacion"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="153dp"
+                android:layout_height="144dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="25dp">
 
-    <Button
-        android:id="@+id/cargarImgBTN"
-        android:layout_width="143dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="12dp"
-        android:text="Cargar Imagen"
-        app:layout_constraintBottom_toTopOf="@+id/tomarFotoBNT"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="149dp"
+                    android:layout_height="144dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
+            </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/tomarFotoBNT"
+                    android:layout_width="143dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center|center_vertical"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="35dp"
+                    android:text="Tomar Foto" />
+
+                <Button
+                    android:id="@+id/cargarImgBTN"
+                    android:layout_width="143dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_vertical"
+                    android:text="Cargar Imagen" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/crearPubliBTN"
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Crear Publicacion" />
+    </LinearLayout>
+
+</ScrollView>

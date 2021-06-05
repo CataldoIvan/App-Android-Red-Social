@@ -15,6 +15,7 @@ import com.example.redsocial.entidades.Usuario;
 import com.example.redsocial.utilidades.Utilidades;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -53,7 +54,12 @@ public class Perfil extends AppCompatActivity {
 
         ConexionSQLiteHelper conx=new ConexionSQLiteHelper(getApplicationContext());
         Usuario user=conx.obtenerDatosUserForId(parseInt(getIntent().getStringExtra("usuarioNro")));
-        imgPerfil.setImageBitmap(user.getImg_Post());
+        if (user.getImg_Post()!=null){
+            imgPerfil.setImageBitmap(user.getImg_Post());
+        }else {
+            imgPerfil.setImageResource(R.drawable.jeremy_full);
+        }
+
         imgPortada.setImageResource(R.drawable.fondo_negro);
 
         correo.setText(user.getMail());
