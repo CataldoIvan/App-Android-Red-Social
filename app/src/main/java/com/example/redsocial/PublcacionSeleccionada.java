@@ -86,7 +86,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             //Manjeo de Fragment
             listaComentarioskFragment = new ListaComentarioskFragment();
             Bundle datosIdComent = new Bundle();
-            datosIdComent.putInt("idComentario", (Integer) getIntent().getSerializableExtra("postSelect"));
+            datosIdComent.putInt("idComentarioPSelect", (Integer) getIntent().getSerializableExtra("postSelect"));
             listaComentarioskFragment.setArguments(datosIdComent);
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView4, listaComentarioskFragment).commit();
         }catch (Exception e){

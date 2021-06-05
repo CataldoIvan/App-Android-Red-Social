@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".ListadoPublicacionFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerIdPublicaciones"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="always"
+        android:scrollY="10dp"
+        android:scrollbarDefaultDelayBeforeFade="800"
+        android:scrollbarSize="20dp"
+        android:scrollbarStyle="insideInset">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>
+
+
+

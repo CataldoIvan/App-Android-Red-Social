@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
         android:paddingTop="5dp">
@@ -71,10 +71,10 @@
                 tools:visibility="visible" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardImgPublicacion"
                 android:layout_width="300dp"
                 android:layout_height="270dp"
-                app:cardCornerRadius="15dp"
-                android:id="@+id/cardImgPublicacion">
+                app:cardCornerRadius="15dp">
 
                 <ImageView
                     android:id="@+id/publSelFoto"
@@ -88,7 +88,7 @@
 
 
             <Space
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="10dp"
                 android:contentDescription="gh"
                 android:padding="10dp"
@@ -101,24 +101,44 @@
 
                 <ImageView
                     android:id="@+id/IVcomentario"
-                    android:layout_width="0dp"
+                    android:layout_width="41dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_comment" />
 
+                <TextView
+                    android:id="@+id/cantComentPublic"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="0" />
+
                 <ImageView
                     android:id="@+id/IVlike"
-                    android:layout_width="0dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_star" />
 
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0" />
+
                 <ImageView
                     android:id="@+id/IVshare"
-                    android:layout_width="0dp"
+                    android:layout_width="42dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="?attr/actionModeShareDrawable" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Space

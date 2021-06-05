@@ -2,6 +2,8 @@ package com.example.redsocial.entidades;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -21,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.example.redsocial.ConexionSQLiteHelper;
 import com.example.redsocial.Inicio;
 import com.example.redsocial.Perfil;
 import com.example.redsocial.PublcacionSeleccionada;
@@ -36,6 +39,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
 
 
 public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
@@ -44,6 +48,9 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
     public int resourseLayout;
     public ImageView imgPost;
     public CardView cardImagen;
+
+    ConexionSQLiteHelper conxDB;
+    Integer contadorPublicaciones=0;
 
 
     public PublicacionAdaptador(@NonNull Context context, int resource, List<Publicacion> objects) {
@@ -59,6 +66,10 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         View view= LayoutInflater.from(context).inflate(R.layout.card_view_comentarios,null);
 
         Publicacion publicacion=publicacionList.get(position);
+        consultarBasePublicaciones(publicacion.getId());
+        TextView contadorPubli=view.findViewById(R.id.cantComentPublic);
+        contadorPubli.setText(contadorPublicaciones.toString());
+
 
 
         ImageView imagen=view.findViewById(R.id.publSelFotoPerfil);
@@ -212,6 +223,17 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
             e.printStackTrace();
         }
 
+    }
+    private void consultarBasePublicaciones(Integer idPublicacion) {
+        contadorPublicaciones=0;
+        conxDB=new ConexionSQLiteHelper(getContext());
+        SQLiteDatabase db=conxDB.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PUBLICAIONES +" WHERE "+ Utilidades.CAMPO_USUARIOID+" = "+idPublicacion+ " ;", null);
+
+        while(cursor.moveToNext()){
+            contadorPublicaciones+=1;
+
+        }
     }
 
 }
