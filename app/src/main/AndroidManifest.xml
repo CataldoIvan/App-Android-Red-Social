@@ -7,9 +7,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,10 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RedSocial">
+        <activity android:name=".Feed"></activity>
         <activity
             android:name=".PublicacionSeleccionadaScrolling"
             android:label="@string/title_activity_publicacion_seleccionada_scrolling"
-            android:theme="@style/Theme.RedSocial.NoActionBar"></activity>
+            android:theme="@style/Theme.RedSocial.NoActionBar" />
         <activity android:name=".PublicacionSeleccionadaFrag" />
         <activity android:name=".PublcacionSeleccionada" />
         <activity android:name=".Perfil" />

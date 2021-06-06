@@ -58,6 +58,34 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Deseas agregar la ubicacion a la publicacion?" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ubicacionTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <androidx.cardview.widget.CardView
                 android:layout_width="153dp"
                 android:layout_height="144dp"
@@ -68,6 +96,7 @@
                     android:id="@+id/imageView2"
                     android:layout_width="149dp"
                     android:layout_height="144dp"
+                    android:scaleType="centerCrop"
                     android:visibility="visible"
                     app:srcCompat="@drawable/ic_launcher_foreground" />
             </androidx.cardview.widget.CardView>

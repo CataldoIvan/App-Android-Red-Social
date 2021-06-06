@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              /* Intent intento=new Intent(getApplicationContext(), PublicacionSeleccionadaScrolling.class);
-                startActivity(intento);*/
+               Intent intento=new Intent(getApplicationContext(), Feed.class);
+                startActivity(intento);
 
             }
         });

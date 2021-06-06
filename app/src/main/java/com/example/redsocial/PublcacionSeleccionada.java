@@ -3,6 +3,7 @@ package com.example.redsocial;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -16,13 +17,18 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +72,15 @@ public class PublcacionSeleccionada extends AppCompatActivity {
     AlertDialog dialog;
 
     ListaComentarioskFragment listaComentarioskFragment;
+    //variables para visualizar foto, como historias
+    public int MAX_VALUE = 50;
+    CountDownTimer cTimer = null;
+    LayoutInflater inflaterHistoria;
+    View historiaInflate;
+    ImageView imagenHistoria;
+    ProgressBar progressBar;
+    Long tiempoRestante;
+    LinearLayout layoutFeed;
 
     @SuppressLint({"WrongViewCast", "ResourceType"})
     @Override
@@ -77,6 +92,18 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         imgPublicacion = findViewById(R.id.publSelFoto);
         fotoPerfil = findViewById(R.id.publSelFotoPerfil);
         conxDB = new ConexionSQLiteHelper(getApplicationContext());
+
+        //visualizacion de imagen
+        layoutFeed = findViewById(R.id.linear2);
+        inflaterHistoria = getLayoutInflater();
+        historiaInflate = inflaterHistoria.inflate(R.layout.cardview_historias, layoutFeed, false);
+        dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view1 = inflater.inflate(R.layout.cardview_historias, layoutFeed, false);
+        dialogBuilder.setView(view1);
+        dialog=dialogBuilder.create();
+        dialog.show();
+        //fin de visualizacion de imagen como historia,
 
         //comentario
         agregarComen = (Button) findViewById(R.id.btnComentar);
@@ -146,6 +173,19 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             System.out.println("ERRRROOOOOO:" + e);
         }
 
+        imgPublicacion.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                dialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view1 = inflater.inflate(R.layout.cardview_historias, layoutFeed, false);
+                
+                dialogBuilder.setView(view1);
+                dialog=dialogBuilder.create();
+                dialog.show();
+            }
+        });
 
 
       agregarComen.setOnClickListener(new View.OnClickListener() {
@@ -154,9 +194,6 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             public void onClick(View v) {
                 agregarComentario();
                // ventanaEmergenteComentarios();
-
-
-                
             }
         });
 
@@ -246,6 +283,51 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         toas.setDuration(Toast.LENGTH_LONG);
         toas.show();
 */
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint("ClickableViewAccessibility")
+    public void abrirHistoria(View view) {
+
+        layoutFeed.addView(historiaInflate);
+        tiempoRestante = Long.valueOf(1);
+        iniciarTimer(5000, 100);
+        progressBar = findViewById(R.id.progresoHistoria);
+        progressBar.setMax(MAX_VALUE);
+        imagenHistoria = findViewById(R.id.imagenHistoria);
+        imagenHistoria.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public boolean onTouch(final View v, final MotionEvent e) {
+                switch (e.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        cTimer.cancel();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        iniciarTimer(5000 - (tiempoRestante*100), 100);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    void iniciarTimer(long total, long intervalo) {
+        cTimer = new CountDownTimer(total, intervalo) {
+            int progreso = Math.toIntExact(tiempoRestante);
+            @Override
+            public void onTick(long millisUntilFinished) {
+                progressBar.setProgress(progreso);
+                progreso += (1);
+                tiempoRestante = Long.valueOf(progreso);
+            }
+            @Override
+            public void onFinish() {
+                progressBar.setProgress(MAX_VALUE);
+                layoutFeed.removeView(historiaInflate);
+            }
+        }.start();
     }
 
 

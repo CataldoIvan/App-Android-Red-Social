@@ -2,17 +2,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PublcacionSeleccionada">
 
     <LinearLayout
+        android:id="@+id/linearId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/linear2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -84,9 +87,8 @@
                     android:layout_marginTop="20dp"
                     android:ems="10"
                     android:hint="Escribe un comentario"
-                    android:maxLength="100"
-                    android:inputType="textMultiLine" />
-
+                    android:inputType="textMultiLine"
+                    android:maxLength="100" />
 
 
                 <Button
