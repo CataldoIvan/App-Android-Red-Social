@@ -51,12 +51,20 @@ public class AdaptadorPublicacionFrag extends
         vistaAdevolver.setOnClickListener((this));
         return new PublicacionViewHolder(vistaAdevolver);
     }
-    TextView nombreUser,textoPublicacion;
-    ImageView imgPerfil,imgPublicacion;
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdaptadorPublicacionFrag.PublicacionViewHolder holder, int position) {
         holder.nombreUser.setText(listaPublicaciones.get(position).getUsuario_nombre());
         holder.textoPublicacion.setText(listaPublicaciones.get(position).getComentario());
+        if (listaPublicaciones.get(position).getCantComentarios()!=null){
+            holder.cantComentario.setText(listaPublicaciones.get(position).getCantComentarios().toString());
+        }
+        if (listaPublicaciones.get(position).getCantMeGustas()!=null){
+            holder.cantMG.setText(listaPublicaciones.get(position).getCantMeGustas().toString());
+        }
+
+
+
 
 
         if (listaPublicaciones.get(position).getUsuario_img_perfil()!=null){
@@ -101,6 +109,7 @@ public class AdaptadorPublicacionFrag extends
             holder.cardImagen.setVisibility(View.GONE);
 
         }
+
     }
 
     @Override
@@ -109,11 +118,14 @@ public class AdaptadorPublicacionFrag extends
     }
 
     public class PublicacionViewHolder extends RecyclerView.ViewHolder {
-        TextView nombreUser,textoPublicacion;
+        TextView nombreUser,textoPublicacion,cantComentario,cantMG;
         ImageView imgPerfil,imgPublicacion;
         CardView cardImagen;
         public PublicacionViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+            nombreUser=(TextView)itemView.findViewById(R.id.publSelNomUser);
+            cantComentario=(TextView)itemView.findViewById(R.id.cantComentPublic);
+            cantMG=(TextView)itemView.findViewById(R.id.cantMG_TV);
             nombreUser=(TextView)itemView.findViewById(R.id.publSelNomUser);
             textoPublicacion=(TextView)itemView.findViewById(R.id.publSelPublicacion);
             imgPerfil=(ImageView)itemView.findViewById(R.id.publSelFotoPerfil);

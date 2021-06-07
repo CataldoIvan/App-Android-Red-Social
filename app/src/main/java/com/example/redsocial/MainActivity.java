@@ -93,49 +93,43 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intento);
             }
         });
-        fragmentbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-               Intent intento=new Intent(getApplicationContext(), Feed.class);
-                startActivity(intento);
+        if (existenPreferenciasGuardadas()){
+            executor = ContextCompat.getMainExecutor(this);
+            biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
 
-            }
-        });
+                @Override
+                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    // validarUsuarioxPreferencias();
+                    Toast.makeText(MainActivity.this, "No se pudo validar su huella", Toast.LENGTH_LONG).show();
+                }
 
-        executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    Toast.makeText(MainActivity.this, "Huella confirmada con exito...", Toast.LENGTH_LONG).show();
+                    validarUsuarioxPreferencias();
 
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                validarUsuarioxPreferencias();
-                Toast.makeText(MainActivity.this, "El sistema no cuenta sistema de Huella"+errString, Toast.LENGTH_LONG).show();
-            }
+                }
 
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(MainActivity.this, "Huella confirmada con exito...", Toast.LENGTH_LONG).show();
-                validarUsuarioxPreferencias();
-
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(MainActivity.this, "La huella no es la correcta!", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(MainActivity.this, "La huella no es la correcta!", Toast.LENGTH_LONG).show();
+                }
+            });
 
 
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Ingresa con tu huella digital")
-                //.setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("CANCELAR")
-                .build();
+            promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Ingresa con tu huella digital")
+                    //.setSubtitle("Log in using your biometric credential")
+                    .setNegativeButtonText("CANCELAR")
+                    .build();
 
-        biometricPrompt.authenticate(promptInfo);
+            biometricPrompt.authenticate(promptInfo);
+        }
+
 
     }
 
@@ -232,9 +226,19 @@ public class MainActivity extends AppCompatActivity {
             contraseniaLog.setText(pass);
             iniciarSesion(usuarioLog.getText().toString(),contraseniaLog.getText().toString());
         }
+    }
 
-
-
+    private boolean existenPreferenciasGuardadas() {
+        usuarioLog=(EditText)findViewById(R.id.usuarioLogin);
+        contraseniaLog=(EditText)findViewById(R.id.contraseniaLogin);
+        SharedPreferences preferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        String user=preferences.getString(Utilidades.CAMPO_USER_USUARIO,null);
+        String pass=preferences.getString(Utilidades.CAMPO_USER_CONTRAS,null);
+        if ( user!=null && pass!=null ){
+           return true;
+        }else{
+            return false;
+        }
     }
 
     private void guardarPreferencias(String usuario,String contra) {

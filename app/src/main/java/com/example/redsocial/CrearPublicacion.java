@@ -19,6 +19,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,11 +56,15 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static com.example.redsocial.PublcacionSeleccionada.rotateImage;
 
 public class CrearPublicacion extends AppCompatActivity {
 
@@ -110,12 +115,18 @@ public class CrearPublicacion extends AppCompatActivity {
         textView1 = findViewById(R.id.textView11);
         textView2 = findViewById(R.id.ubicacionTV);
         agregarUbicacion = findViewById(R.id.checkBoxUbicacion);
+        //try{
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-        } else {
-            locationStart();
-        }
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            } else {
+                locationStart();
+           }
+      /*  }catch(Exception e){
+            System.out.println(e);
+        }*/
+
+
         //FIN gps
 
 
@@ -184,6 +195,8 @@ public class CrearPublicacion extends AppCompatActivity {
         }
     }
     private File CrearImagen() throws IOException {
+        useCam = true;
+        useGallery = false;
         String nombreImagen = "Foto_";
         File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imagen = File.createTempFile(nombreImagen, ".jpg", directorio);
@@ -204,16 +217,34 @@ public class CrearPublicacion extends AppCompatActivity {
             }
         }
         if (useCam) {
-            if (resultCode == RESULT_OK && data != null) {
-                File imagenfile=new File(Utilidades.RUTA_IMAGEN);
-                imgFilePath = data.getData();
+            if (resultCode == RESULT_OK ) {
 
-                if (imagenfile.exists()) {
-                    imagen_post.setImageURI(imagenUri);
+                File imagenfile = new File(Utilidades.RUTA_IMAGEN);
+                imgToStorage = BitmapFactory.decodeFile(imagenfile.getAbsolutePath().toLowerCase());
+                ExifInterface ei = null;
+                try {
+                    ei = new ExifInterface(imagenfile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-               // almacenamiento sin girar la imagen
-                //imgToStorage=BitmapFactory.decodeFile(imagenfile.getAbsolutePath());
-                //imagen_post.setImageBitmap(imgToStorage);
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                Bitmap rotatedBitmap = null;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotatedBitmap = rotateImage(imgToStorage, 90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotatedBitmap = rotateImage(imgToStorage, 180);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotatedBitmap = rotateImage(imgToStorage, 270);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        rotatedBitmap = imgToStorage;
+
+                }
+                imagen_post.setImageBitmap(rotatedBitmap);
             }
         }
 
@@ -271,6 +302,8 @@ public class CrearPublicacion extends AppCompatActivity {
         Local.setCrearPublicaion(this);
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
+            Toast.makeText(this, "GPS desactivado. Acttivalo para ver tu ubicacion", Toast.LENGTH_LONG).show();
+
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(settingsIntent);
         }

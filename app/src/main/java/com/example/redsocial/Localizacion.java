@@ -5,13 +5,6 @@ import android.location.LocationListener;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.example.redsocial.Feed;
-
-import org.w3c.dom.Text;
 
 public class Localizacion implements LocationListener {
     CrearPublicacion feed;
@@ -36,14 +29,14 @@ public class Localizacion implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
         // Este metodo se ejecuta cuando el GPS es desactivado
-        feed.textView1.setText("GPS Desactivado");
+       // feed.textView1.setText("GPS Desactivado, por favor encenderlo");
     }
 
 
     @Override
     public void onProviderEnabled(String provider) {
         // Este metodo se ejecuta cuando el GPS es activado
-        feed.textView1.setText("GPS Activado");
+       // feed.textView1.setText("GPS Activado");
     }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {

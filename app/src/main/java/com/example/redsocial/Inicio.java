@@ -162,7 +162,7 @@ public class Inicio extends AppCompatActivity {
             }
 
             Usuario objUserPost=conxDB.obtenerDatosUserForId(parseInt(cursor.getString(2)));
-            publicacion.setUsuario_nombre(objUserPost.getNombre());
+            publicacion.setUsuario_nombre(objUserPost.getNombre()+" "+objUserPost.getApellido());
             publicacion.setUsuario_img_perfil(objUserPost.getImg_Post());
 
             mListPublicacion.add(publicacion);

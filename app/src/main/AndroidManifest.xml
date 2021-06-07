@@ -24,7 +24,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RedSocial">
-        <activity android:name=".Feed"></activity>
         <activity android:name=".PublcacionSeleccionada" />
         <activity android:name=".Perfil" />
         <activity android:name=".Registrarse" />

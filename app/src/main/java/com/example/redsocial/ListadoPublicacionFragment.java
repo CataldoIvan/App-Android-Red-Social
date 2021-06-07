@@ -23,11 +23,7 @@ import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListadoPublicacionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ListadoPublicacionFragment extends Fragment {
     Integer idUsuarioEnPerfil=null;
     ArrayList<Publicacion> mListPublicacion;
@@ -38,16 +34,6 @@ public class ListadoPublicacionFragment extends Fragment {
     public ListadoPublicacionFragment() {
         // Required empty public constructor
     }
-
-    /*// TODO: Rename and change types and number of parameters
-    public static ListadoPublicacionFragment newInstance(Integer idUserPerf, String param2) {
-        ListadoPublicacionFragment fragment = new ListadoPublicacionFragment();
-        Bundle args = new Bundle();
-        args.putInt("idUserPerfil", idUserPerf);
-
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +78,8 @@ public class ListadoPublicacionFragment extends Fragment {
             }else{
                 publicacion.setImg_Post(null);
             }
+            publicacion.setCantComentarios(cursor.getInt(cursor.getColumnIndex(Utilidades.CAMPO_CANT_COMENTARIOS_PUBLICACIONES)));
+            publicacion.setCantMeGustas(cursor.getInt(cursor.getColumnIndex(Utilidades.CAMPO_CANT_ME_GUSTAS_PUBLICACIONES)));
 
             Usuario objUserPost=conxDB.obtenerDatosUserForId(cursor.getInt(cursor.getColumnIndex(Utilidades.CAMPO_USUARIOID)));
             publicacion.setUsuario_nombre(objUserPost.getNombre());
