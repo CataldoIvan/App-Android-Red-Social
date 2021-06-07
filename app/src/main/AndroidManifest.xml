@@ -25,11 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedSocial">
         <activity android:name=".Feed"></activity>
-        <activity
-            android:name=".PublicacionSeleccionadaScrolling"
-            android:label="@string/title_activity_publicacion_seleccionada_scrolling"
-            android:theme="@style/Theme.RedSocial.NoActionBar" />
-        <activity android:name=".PublicacionSeleccionadaFrag" />
         <activity android:name=".PublcacionSeleccionada" />
         <activity android:name=".Perfil" />
         <activity android:name=".Registrarse" />

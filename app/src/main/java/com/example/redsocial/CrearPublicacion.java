@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +40,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import android.content.Context;
@@ -86,11 +89,7 @@ public class CrearPublicacion extends AppCompatActivity {
     double latitud;
     double longitud;
     String direccion;
-
-
-
-
-
+    CheckBox agregarUbicacion;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,17 +109,13 @@ public class CrearPublicacion extends AppCompatActivity {
         //Comienzo GPS
         textView1 = findViewById(R.id.textView11);
         textView2 = findViewById(R.id.ubicacionTV);
+        agregarUbicacion = findViewById(R.id.checkBoxUbicacion);
 
-
-
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            } else {
-                locationStart();
-            }
-
-
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+        } else {
+            locationStart();
+        }
         //FIN gps
 
 
@@ -239,19 +234,24 @@ public class CrearPublicacion extends AppCompatActivity {
     private void registraPublicacion() {
 
         ConexionSQLiteHelper conxDB=new ConexionSQLiteHelper(this);
-
         SQLiteDatabase db=conxDB.getWritableDatabase();
+        //conxDB.onUpgrade(db,5,6);
+
+
 
         ContentValues values=new ContentValues();
         values.put(Utilidades.CAMPO_PUBLICACION,textoET.getText().toString());
         values.put(Utilidades.CAMPO_USUARIOID,Utilidades.USER_LOGUEADO);
         // forma anterior de cargar foto
         values.put(Utilidades.CAMPO_IMG_POST,Utilidades.RUTA_IMAGEN);
+        values.put(Utilidades.CAMPO_DATE,new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+        values.put(Utilidades.CAMPO_CANT_COMENTARIOS_PUBLICACIONES,0);
+        values.put(Utilidades.CAMPO_CANT_ME_GUSTAS_PUBLICACIONES,0);
+        if (agregarUbicacion.isChecked()){
+            values.put(Utilidades.CAMPO_UBICACION_PUBLICACIONES,direccion);
+        }
 
         Long idresultante=db.insert(Utilidades.TABLA_PUBLICAIONES,Utilidades.CAMPO_ID,values);
-
-        Snackbar.make(findViewById(android.R.id.content),"Se ingreso :"+idresultante,
-                Snackbar.LENGTH_LONG).setDuration(5000).show();
 
         imgToStorage=null;
         Utilidades.RUTA_IMAGEN=null;
@@ -314,6 +314,13 @@ public class CrearPublicacion extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    public void abrirMaps(View view,String direcc){
+        String geo = "http://maps.google.co.in/maps?q=" + direcc;
+        //String geo = "http://maps.google.com/maps?q=loc:" + latitud + "," + longitud + "(Buenos Aires)";
+        Uri intentUri = Uri.parse(geo);
+        Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
+        startActivity(intent);
     }
 
     //******FIN del manejo de GPS

@@ -15,10 +15,14 @@ public class Utilidades extends AppCompatActivity {
     public static final  String CAMPO_IMG_POST="imagenPost";
     public static final String CAMPO_USUARIOID="usuario_id";
     public static final String CAMPO_DATE="date";
+    public static final String CAMPO_CANT_COMENTARIOS_PUBLICACIONES="cant_comentarios";
+    public static final String CAMPO_CANT_ME_GUSTAS_PUBLICACIONES="cant_me_gustas";
+    public static final String CAMPO_UBICACION_PUBLICACIONES="ubicacion";
+
     public static final String CREAR_TABLA_PUBLICACION ="CREATE TABLE "+ TABLA_PUBLICAIONES +" " +
             "("+CAMPO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+ CAMPO_PUBLICACION +" TEXT,"+
             CAMPO_USUARIOID+" INTEGER,"+CAMPO_IMG_POST+" TEXT," +CAMPO_DATE+
-            " TEXT)";
+            " TEXT,"+CAMPO_CANT_COMENTARIOS_PUBLICACIONES+" INTEGER,"+CAMPO_CANT_ME_GUSTAS_PUBLICACIONES+" INTEGER,"+CAMPO_UBICACION_PUBLICACIONES+" TEXT)";
     public static String RUTA_IMAGEN;
 
 

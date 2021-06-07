@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.example.redsocial.ConexionSQLiteHelper;
-import com.example.redsocial.Inicio;
+import com.example.redsocial.CrearPublicacion;
 import com.example.redsocial.Perfil;
-import com.example.redsocial.PublcacionSeleccionada;
 import com.example.redsocial.R;
 import com.example.redsocial.utilidades.Utilidades;
-import com.google.android.material.snackbar.Snackbar;
-
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.Integer.parseInt;
 
@@ -50,7 +43,8 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
     public CardView cardImagen;
 
     ConexionSQLiteHelper conxDB;
-    Integer contadorPublicaciones=0;
+    Integer cantComentarios =0;
+    CrearPublicacion objCrearPubli;
 
 
     public PublicacionAdaptador(@NonNull Context context, int resource, List<Publicacion> objects) {
@@ -64,11 +58,23 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view= LayoutInflater.from(context).inflate(R.layout.card_view_comentarios,null);
+        objCrearPubli=new CrearPublicacion();
 
         Publicacion publicacion=publicacionList.get(position);
-        consultarBasePublicaciones(publicacion.getId());
+        //consultarBasePublicaciones(publicacion.getId());
         TextView contadorPubli=view.findViewById(R.id.cantComentPublic);
-        contadorPubli.setText(contadorPublicaciones.toString());
+        contadorPubli.setText(publicacion.getCantComentarios().toString());
+
+        TextView contadorMG=view.findViewById(R.id.cantMG_TV);
+        ImageView like=view.findViewById(R.id.IVlike);
+        contadorMG.setText(publicacion.getCantMeGustas().toString());
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contadorMG.setText(SumarCantMGEnPublicaion(publicacion.getId()));
+                Toast.makeText(context, "Le haz dado tu MG!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -88,7 +94,7 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
         });
 
         TextView txtUser=view.findViewById(R.id.publSelNomUser);
-        txtUser.setText("id:"+publicacion.getId()+" | "+publicacion.getUsuario_nombre());
+        txtUser.setText(" "+publicacion.getUsuario_nombre());
         txtUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +155,15 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
                 }
         });
 
+        //configuracion de ubicacion
+        TextView ubicacion=view.findViewById(R.id.localizacionTV);
+        if (!publicacion.getUbicacion().equals("")){
+            ubicacion.setText("Desde: "+publicacion.getUbicacion());
+            ubicacion.setVisibility(View.VISIBLE);
+        }else {
+            ubicacion.setVisibility(View.GONE);
+        }
+        //FIN  configuracion de ubicacion
 
         //imgPost.setImageURI(Uri.fromFile(new File(publicacion.getImg_Post())));
         //System.out.println("////////////////////////////////LA IMAGEN ES DE EEEEEE "+publicacion.getImg_Post());
@@ -225,15 +240,37 @@ public class PublicacionAdaptador extends ArrayAdapter<Publicacion> {
 
     }
     private void consultarBasePublicaciones(Integer idPublicacion) {
-        contadorPublicaciones=0;
+        cantComentarios =0;
         conxDB=new ConexionSQLiteHelper(getContext());
         SQLiteDatabase db=conxDB.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_COMENTARIOS +" WHERE "+ Utilidades.CAMPO_COMEN_PUBLIID+" = "+idPublicacion+ " ;", null);
 
         while(cursor.moveToNext()){
-            contadorPublicaciones+=1;
+            cantComentarios +=1;
 
         }
+    }
+    public String SumarCantMGEnPublicaion(Integer idPublicacion) {
+        conxDB=new ConexionSQLiteHelper(getContext());
+        SQLiteDatabase objSQLdb=conxDB.getWritableDatabase();
+        Publicacion objPubli=null;
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM publicaciones WHERE id="+idPublicacion,null);
+        if(objCursor!=null){
+            while (objCursor.moveToNext()) {
+                objPubli = new Publicacion();
+                objPubli.setCantMeGustas(objCursor.getInt(objCursor.getColumnIndex("cant_me_gustas")));
+            }
+        }
+        Integer cant=0;
+        cant=objPubli.getCantMeGustas();
+        cant=cant+1;
+        String strSQL = "UPDATE "+Utilidades.TABLA_PUBLICAIONES+" SET "+Utilidades.CAMPO_CANT_ME_GUSTAS_PUBLICACIONES+" = "+cant+" WHERE id="+idPublicacion;
+
+        objSQLdb.execSQL(strSQL);
+        return cant.toString();
+
+
+
     }
 
 }

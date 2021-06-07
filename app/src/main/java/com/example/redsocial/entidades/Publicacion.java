@@ -7,22 +7,28 @@ import java.io.Serializable;
 public class Publicacion implements Serializable {
     Integer id;
     String comentario;
-    String usuario_id;
+    Integer usuario_id;
     private String img_Post;
+    private Integer cantComentarios;
+    private Integer cantMeGustas;
+    private String ubicacion;
+    private String fecha;
     //Estas variables no se encuentran en la Base de datos, se  utilizan para mostra datos en el Inicio
     private String usuario_nombre;
     private Bitmap usuario_img_perfil;
 
+
+
     public Publicacion() {
 
     }
-    public Publicacion( String comentario, String usuario_id) {
+    public Publicacion( String comentario, Integer usuario_id) {
 
         this.comentario = comentario;
         this.usuario_id = usuario_id;
     }
 
-    public Publicacion(String comentario, String usuario_id, String img_Post) {
+    public Publicacion(String comentario, Integer usuario_id, String img_Post) {
         this.comentario = comentario;
         this.usuario_id = usuario_id;
         this.img_Post = img_Post;
@@ -33,6 +39,38 @@ public class Publicacion implements Serializable {
         this.comentario = obtenerDatosPublicacionPorId.getComentario();
         this.usuario_id = obtenerDatosPublicacionPorId.getUsuario_id();
         this.img_Post = obtenerDatosPublicacionPorId.getImg_Post();
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public Integer getCantComentarios() {
+        return cantComentarios;
+    }
+
+    public void setCantComentarios(Integer cantComentarios) {
+        this.cantComentarios = cantComentarios;
+    }
+
+    public Integer getCantMeGustas() {
+        return cantMeGustas;
+    }
+
+    public void setCantMeGustas(Integer cantMeGustas) {
+        this.cantMeGustas = cantMeGustas;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public Integer getId() {
@@ -51,11 +89,11 @@ public class Publicacion implements Serializable {
         this.comentario = comentario;
     }
 
-    public String getUsuario_id() {
+    public Integer getUsuario_id() {
         return usuario_id;
     }
 
-    public void setUsuario_id(String usuario_id) {
+    public void setUsuario_id(Integer usuario_id) {
         this.usuario_id = usuario_id;
     }
 

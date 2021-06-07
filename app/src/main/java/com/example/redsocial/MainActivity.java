@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void iniciarSesion(String userIngres,String contraIngres) {
         restaurarErrores();
         validarCamposUsuario(userIngres);
@@ -170,8 +168,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent intento=new Intent(MainActivity.this,Inicio.class);
                         Utilidades.USER_LOGUEADO=user.getId();
                         startActivity(intento);
+                        finish();
                     }else {
-                        errorContrasena.setText("La contrasenia es incorrecta");
+                        errorContrasena.setText("La contraseña es incorrecta");
                         errorContrasena.setVisibility(View.VISIBLE);
 
                     }
@@ -184,9 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.errorUsuario).setVisibility(View.VISIBLE);
             }
         }catch(Exception e){
-            Toast.makeText(MainActivity.this, "aca esta haciednolo"+e, Toast.LENGTH_LONG).show();
             System.out.println("********** error de "+e);
-            //findViewById(R.id.errorPass2).setVisibility(View.VISIBLE);
             findViewById(R.id.errorContrasena).setVisibility(View.VISIBLE);
         }
 
@@ -248,12 +245,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(Utilidades.CAMPO_USER_CONTRAS,contra);
         editor.commit();
 
-        Toast.makeText(MainActivity.this, "se encontro el usuario: \n" +
-                                    "Usuario :"+usuario+"\n"+
-                                    "contrasenia: "+contra+"\n"+
-
-                            "Es chequeado esta :"+mantenerSesion.isChecked()+"\n"
-                            , Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, "Inicio exitoso", Toast.LENGTH_LONG).show();
 
     }
 }

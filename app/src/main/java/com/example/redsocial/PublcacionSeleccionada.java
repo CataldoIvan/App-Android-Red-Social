@@ -93,32 +93,13 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         fotoPerfil = findViewById(R.id.publSelFotoPerfil);
         conxDB = new ConexionSQLiteHelper(getApplicationContext());
 
-        //visualizacion de imagen
-        layoutFeed = findViewById(R.id.linear2);
-        inflaterHistoria = getLayoutInflater();
-        historiaInflate = inflaterHistoria.inflate(R.layout.cardview_historias, layoutFeed, false);
-        dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view1 = inflater.inflate(R.layout.cardview_historias, layoutFeed, false);
-        dialogBuilder.setView(view1);
-        dialog=dialogBuilder.create();
-        dialog.show();
-        //fin de visualizacion de imagen como historia,
+
 
         //comentario
         agregarComen = (Button) findViewById(R.id.btnComentar);
         comentarioText = (EditText) findViewById(R.id.ETcomentario);
         //mListView=findViewById(R.id.listPublicacionesCom);
-        try {
-            //Manjeo de Fragment
-            listaComentarioskFragment = new ListaComentarioskFragment();
-            Bundle datosIdComent = new Bundle();
-            datosIdComent.putInt("idComentarioPSelect", (Integer) getIntent().getSerializableExtra("postSelect"));
-            listaComentarioskFragment.setArguments(datosIdComent);
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView4, listaComentarioskFragment).commit();
-        }catch (Exception e){
-            System.out.println("error en crear frament"+e);
-        }
+
 
         try {
              intent = (Integer) getIntent().getSerializableExtra("postSelect");
@@ -127,7 +108,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
 
             //System.out.println("ppppppppppppppppppppppppppp" + pub.getId());
             Publicacion.setText(pub.getComentario());
-            nombreUser.setText("id:" + pub.getId() + " - " + pub.getUsuario_nombre());
+            nombreUser.setText("id:" + pub.getId().toString() + " - " + pub.getUsuario_nombre());
             if (pub.getUsuario_img_perfil()!=null){
                 fotoPerfil.setImageBitmap(pub.getUsuario_img_perfil());
             }else{
@@ -172,18 +153,69 @@ public class PublcacionSeleccionada extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println("ERRRROOOOOO:" + e);
         }
+        try {
+            //Manjeo de Fragment
+            listaComentarioskFragment = new ListaComentarioskFragment();
+            Bundle datosIdComent = new Bundle();
+            datosIdComent.putInt("idComentarioPSelect", intent);
+            listaComentarioskFragment.setArguments(datosIdComent);
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView4, listaComentarioskFragment).commit();
+        }catch (Exception e){
+            System.out.println("error en crear frament"+e);
+        }
 
         imgPublicacion.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                dialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                //visualizacion de imagen
+                layoutFeed = findViewById(R.id.linear2);
+                inflaterHistoria = getLayoutInflater();
+                historiaInflate = inflaterHistoria.inflate(R.layout.cardview_historias, layoutFeed, false);
+                dialogBuilder = new AlertDialog.Builder(PublcacionSeleccionada.this);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view1 = inflater.inflate(R.layout.cardview_historias, layoutFeed, false);
+                ImageView foto=view1.findViewById(R.id.imagenHistoria);
+                ruta=pub.getImg_Post();
+
+                File imagenfile=new File(pub.getImg_Post());
+                Bitmap bitmap = BitmapFactory.decodeFile(imagenfile.getAbsolutePath());
+
+                ExifInterface ei = null;
+                try {
+                    ei = new ExifInterface(imagenfile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                Bitmap rotatedBitmap = null;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotatedBitmap = rotateImage(bitmap, 90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotatedBitmap = rotateImage(bitmap, 180);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotatedBitmap = rotateImage(bitmap, 270);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        rotatedBitmap = bitmap;
+                }
+
+                foto.setImageBitmap(rotatedBitmap);
+                dialogBuilder.setView(view1);
+                dialog=dialogBuilder.create();
+                dialog.show();
+                //fin de visualizacion de imagen como historia,
+                /*dialogBuilder = new AlertDialog.Builder(getApplicationContext());
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view1 = inflater.inflate(R.layout.cardview_historias, layoutFeed, false);
                 
                 dialogBuilder.setView(view1);
                 dialog=dialogBuilder.create();
-                dialog.show();
+                dialog.show();*/
             }
         });
 
@@ -192,7 +224,7 @@ public class PublcacionSeleccionada extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                agregarComentario();
+                agregarComentario(pub.getId());
                // ventanaEmergenteComentarios();
             }
         });
@@ -212,22 +244,29 @@ public class PublcacionSeleccionada extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void agregarComentario() {
+    private void agregarComentario(Integer idPublicacion) {
         SQLiteDatabase db=conxDB.getWritableDatabase();
         ContentValues valores=new ContentValues();
         valores.put(Utilidades.CAMPO_COMENTARIO,comentarioText.getText().toString());
         valores.put(Utilidades.CAMPO_COMEN_USERID,Utilidades.USER_LOGUEADO);
 
         valores.put(Utilidades.CAMPO_COMEN_PUBLIID,pub.getId());
+
         valores.put(Utilidades.CAMPO_COMEN_FECHA,new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+        conxDB.SumarCantComentariosEnPublicaion(idPublicacion);
 
         Long idresultanteComent=db.insert(Utilidades.TABLA_COMENTARIOS,Utilidades.CAMPO_COMEN_ID,valores);
+
+
+
         Snackbar.make(findViewById(android.R.id.content),"Se ingreso :"+idresultanteComent,
                 Snackbar.LENGTH_LONG).setDuration(5000).show();
         finishAfterTransition();
+
         Intent objIntent=new Intent(PublcacionSeleccionada.this,PublcacionSeleccionada.class);
         objIntent.putExtra("postSelect",intent);
         startActivity(objIntent);
+        onBackPressed();
     }
 
 

@@ -23,8 +23,9 @@ import static java.lang.Integer.parseInt;
 public class Perfil extends AppCompatActivity {
 
     ImageView imgPerfil,imgPortada;
-    TextView correo,nombre,usuario,contadorPubli;
+    TextView correo,nombre,usuario,contadorPubli,MG;
     Integer contadorPublicaciones=0;
+    Integer numeroUser,cantMG=0;
 
     //listado de publicacion prueba
     ConexionSQLiteHelper conxDB;
@@ -40,6 +41,7 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
         correo=(TextView) findViewById(R.id.correoUserPerfilTV);
+        MG=(TextView) findViewById(R.id.cantMGTV);
         nombre=(TextView) findViewById(R.id.nombreUserPerfil);
         usuario=(TextView) findViewById(R.id.usuarioUserPerfil);
         contadorPubli=(TextView) findViewById(R.id.contPubliTV);
@@ -48,12 +50,14 @@ public class Perfil extends AppCompatActivity {
         //manejo de List View
         conxDB = new ConexionSQLiteHelper(getApplicationContext());
         //mListView=findViewById(R.id.listPublicacionesCom);
-        consultarBasePublicaciones();
+
+        numeroUser=(Integer) getIntent().getSerializableExtra("usuarioNro");
+        consultarBasePublicaciones(numeroUser);
 
 
 
         ConexionSQLiteHelper conx=new ConexionSQLiteHelper(getApplicationContext());
-        Usuario user=conx.obtenerDatosUserForId(parseInt(getIntent().getStringExtra("usuarioNro")));
+        Usuario user=conx.obtenerDatosUserForId(numeroUser);
         if (user.getImg_Post()!=null){
             imgPerfil.setImageBitmap(user.getImg_Post());
         }else {
@@ -65,14 +69,15 @@ public class Perfil extends AppCompatActivity {
         correo.setText(user.getMail());
         usuario.setText("@"+user.getUsuario());
         nombre.setText(user.getNombre()+" "+user.getApellido());
-        contadorPubli.setText(contadorPublicaciones.toString());
+        contadorPubli.setText("Tiene un Total de : "+contadorPublicaciones.toString()+" realizadas");
+        MG.setText("Las publicaciones suman : "+cantMG.toString()+" de MG en total");
 
 
         try {
             //Manjeo de Fragment
             listadoPublicacionFragment = new ListadoPublicacionFragment();
             Bundle datosIdUsuarioPerfil = new Bundle();
-            datosIdUsuarioPerfil.putInt("idUserPerfil", parseInt(getIntent().getStringExtra("usuarioNro")));
+            datosIdUsuarioPerfil.putInt("idUserPerfil", numeroUser);
             listadoPublicacionFragment.setArguments(datosIdUsuarioPerfil);
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView5, listadoPublicacionFragment).commit();
         }catch (Exception e){
@@ -94,14 +99,15 @@ public class Perfil extends AppCompatActivity {
 
     }
 
-    private void consultarBasePublicaciones() {
+    private void consultarBasePublicaciones(Integer userId) {
 
         SQLiteDatabase db=conxDB.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PUBLICAIONES +" WHERE "+ Utilidades.CAMPO_USUARIOID+" = "+parseInt(getIntent().getStringExtra("usuarioNro"))+ " ORDER BY id DESC;", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Utilidades.TABLA_PUBLICAIONES +" WHERE "+ Utilidades.CAMPO_USUARIOID+" = "+userId+ " ORDER BY id DESC;", null);
 
         while(cursor.moveToNext()){
             contadorPublicaciones+=1;
+            cantMG=cantMG+cursor.getInt(6);
 
         }
     }

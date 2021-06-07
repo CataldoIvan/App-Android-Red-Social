@@ -82,7 +82,7 @@
 
                 <EditText
                     android:id="@+id/ETcomentario"
-                    android:layout_width="270dp"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:ems="10"
@@ -96,8 +96,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Comentar" />
             </LinearLayout>
 

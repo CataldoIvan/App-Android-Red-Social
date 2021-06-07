@@ -25,13 +25,14 @@ public class Localizacion implements LocationListener {
     public void onLocationChanged(Location loc) {
         // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
         // debido a la deteccion de un cambio de ubicacion
-        loc.getLatitude();
+       /* loc.getLatitude();
         loc.getLongitude();
         String Text = "Mi ubicacion actual es: " + "\n Lat = "
                 + loc.getLatitude() + "\n Long = " + loc.getLongitude();
-        feed.textView2.setText(Text);
+        feed.textView2.setText(Text);*/
         this.feed.setLocation(loc);
     }
+
     @Override
     public void onProviderDisabled(String provider) {
         // Este metodo se ejecuta cuando el GPS es desactivado

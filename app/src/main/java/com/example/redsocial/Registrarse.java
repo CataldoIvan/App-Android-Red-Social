@@ -237,7 +237,7 @@ public class Registrarse extends AppCompatActivity {
                 return true;
 
             }else{
-                errorContrasenia.setText("Contrasenia debil, incompleta y/o Incorrecta.\n Debe contener al menos 6 caracteres con Mayus,Minusc y al menos un Numero");
+                errorContrasenia.setText("Contraseña debil, incompleta y/o Incorrecta.\n Debe contener al menos 6 caracteres con Mayus,Minusc y al menos un Numero");
                 errorContrasenia.setVisibility(View.VISIBLE);
                 return false;
             }
@@ -288,7 +288,7 @@ public class Registrarse extends AppCompatActivity {
             }
 
             Long idresultante_user=db_user.insert(Utilidades.TABLA_USUARIOS,Utilidades.CAMPO_USER_ID,values_user);
-            Toast.makeText(this, "USUARIO REGISTRADO :"+idresultante_user, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Registrado Exitosamente :", Toast.LENGTH_LONG).show();
             finish();
 
         }

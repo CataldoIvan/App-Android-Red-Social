@@ -3,7 +3,9 @@ package com.example.redsocial;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ public class Inicio extends AppCompatActivity {
 
     TextView msj;
     Button nuevaPubli;
+    Button cerrarSesion;
     Button irAPerfil;
     ListView mListView;
     List<Publicacion> mListPublicacion;
@@ -47,6 +50,7 @@ public class Inicio extends AppCompatActivity {
         conxDB=new ConexionSQLiteHelper(this);
         nuevaPubli=(Button)findViewById(R.id.nuevaPubliBTN);
         irAPerfil=(Button)findViewById(R.id.userBtn);
+        cerrarSesion=(Button)findViewById(R.id.cerrarSesionBtn);
         mListView=findViewById(R.id.listadoPost);
 
         ConexionSQLiteHelper objConx=new ConexionSQLiteHelper(getApplicationContext());
@@ -58,7 +62,7 @@ public class Inicio extends AppCompatActivity {
         try {
             consultarBase();
         }catch (Exception e){
-            System.out.println("EL ERROR ES POR EEE"+e);
+
             Intent intento2=new Intent(getApplicationContext(),CrearPublicacion.class);
             startActivity(intento2);
         }
@@ -75,7 +79,7 @@ public class Inicio extends AppCompatActivity {
                 startActivity(objIntent);
                 /*Toast.makeText(Inicio.this, "Id:"+mListPublicacion.get(position).getId()+"\n"+
                                 "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+"\n"+
-                                "Comentario : "+mListPublicacion.get(position).getComentario()+"\n"+                             "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+
+                                "Comentario : "+mListPublicacion.get(position).getComentario()+"\n"+  "Usuario Id:"+mListPublicacion.get(position).getUsuario_id()+
                                 "path imagen:"+mListPublicacion.get(position).getImg_Post()
                         , Toast.LENGTH_LONG).show();*/
 
@@ -85,7 +89,7 @@ public class Inicio extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intento= new Intent(getApplicationContext(),Perfil.class);
-                intento.putExtra("usuarioNro",Utilidades.USER_LOGUEADO.toString());
+                intento.putExtra("usuarioNro",Utilidades.USER_LOGUEADO);
                 startActivity(intento);
             }
         });
@@ -100,6 +104,22 @@ public class Inicio extends AppCompatActivity {
             }
         });
 
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cerrarSesionConDatos();
+            }
+
+
+        });
+
+    }
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
@@ -124,12 +144,21 @@ public class Inicio extends AppCompatActivity {
             publicacion=new Publicacion();
             publicacion.setId(cursor.getInt(0));
             publicacion.setComentario(cursor.getString(1));
-            publicacion.setUsuario_id(cursor.getString(2));
+            publicacion.setUsuario_id(cursor.getInt(2));
            // Forma Antigua de publicar la foto
             if (cursor.getString(3)!=null){
             publicacion.setImg_Post(cursor.getString(3));
             }else{
                 publicacion.setImg_Post(null);
+            }
+            publicacion.setFecha(cursor.getString(4));
+            publicacion.setCantComentarios(cursor.getInt(5));
+            publicacion.setCantMeGustas(cursor.getInt(6));
+            publicacion.setCantMeGustas(cursor.getInt(6));
+            if (cursor.getString(7)!=null){
+                publicacion.setUbicacion(cursor.getString(7));
+            }else{
+                publicacion.setUbicacion("");
             }
 
             Usuario objUserPost=conxDB.obtenerDatosUserForId(parseInt(cursor.getString(2)));
@@ -139,5 +168,22 @@ public class Inicio extends AppCompatActivity {
             mListPublicacion.add(publicacion);
            // Collections.reverse(mListPublicacion);
         }
+    }
+    private void cerrarSesionConDatos() {
+
+        SharedPreferences preferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString(Utilidades.CAMPO_USER_USUARIO,null);
+        editor.putString(Utilidades.CAMPO_USER_CONTRAS,null);
+        Utilidades.USER_LOGUEADO=null;
+        editor.commit();
+        Intent intento2=new Intent(this,MainActivity.class);
+        startActivity(intento2);
+        finish();
+        //Toast.makeText(MainActivity.this, "Inicio exitoso", Toast.LENGTH_LONG).show();
+
+
+
     }
 }

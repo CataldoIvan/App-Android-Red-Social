@@ -16,17 +16,24 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/cerrarSesionBtn"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cerrar\nSesion" />
+
+        <Button
             android:id="@+id/nuevaPubliBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="crear publicacion" />
+            android:text="crear\npublicacion" />
 
         <Button
             android:id="@+id/userBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Perfil" />
+            android:text="Ir a \nPerfil" />
     </LinearLayout>
 
     <ListView

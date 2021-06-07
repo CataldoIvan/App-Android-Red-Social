@@ -85,7 +85,7 @@ public class ListadoPublicacionFragment extends Fragment {
             publicacion=new Publicacion();
             publicacion.setId(cursor.getInt(cursor.getColumnIndex(Utilidades.CAMPO_ID)));
             publicacion.setComentario(cursor.getString(cursor.getColumnIndex(Utilidades.CAMPO_PUBLICACION)));
-            publicacion.setUsuario_id(cursor.getString(2));
+            publicacion.setUsuario_id(cursor.getInt(2));
             // Forma Antigua de publicar la foto
             if (cursor.getString(3)!=null){
                 publicacion.setImg_Post(cursor.getString(cursor.getColumnIndex(Utilidades.CAMPO_IMG_POST)));

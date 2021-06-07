@@ -22,11 +22,12 @@ import static java.lang.Integer.parseInt;
 
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 6;
 
     private ByteArrayOutputStream objectByteArrayOutputStream;
     private byte[] imagenInBytes;
     private  int PICK_IMG_REQUEST=100;
+    Context context;
 
     public ConexionSQLiteHelper(@Nullable Context context) {
         super(context, Utilidades.NOMBRE_DB, null, DATABASE_VERSION);
@@ -40,15 +41,17 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     db.execSQL(Utilidades.CREAR_TABLA_COMENTARIOS);
     db.execSQL(Utilidades.CREAR_TABLA_HISTORIA);
     }
-
+    //String SQLUpdateV2 = "ALTER TABLE publicaciones ADD COLUMN ubicacion TEXT";
     @Override
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva) {
+        /*if(versionAntigua == 5 && versionNueva == 6){
+            db.execSQL(SQLUpdateV2);
+        }*/
         db.execSQL("DROP TABLE IF EXISTS publicaciones");
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS comentarios");
         db.execSQL("DROP TABLE IF EXISTS historias");
 
-    //onCreate(db);
     }
     @Override
     public void onOpen(SQLiteDatabase db) {
@@ -159,6 +162,10 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
 
 
+
+    public static final String CAMPO_UBICACION_PUBLICACIONES="ubicacion";
+
+
     public Publicacion obtenerDatosPublicacionPorId(Integer publicacion){
 
         SQLiteDatabase objSQLdb=this.getReadableDatabase();
@@ -168,15 +175,14 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
             while (objCursor.moveToNext()){
                 objPubli= new Publicacion();
                 objPubli.setId(objCursor.getInt(0));
-                objPubli.setComentario(objCursor.getString(1));
-                objPubli.setUsuario_id(objCursor.getString(2));
-                objPubli.setImg_Post(objCursor.getString(3));
-                System.out.println("//********///////////// COMENTAROP "+objPubli.getComentario());
-                System.out.println("//********///////////// user aid"+objPubli.getUsuario_id());
-                System.out.println("//********///////////// img posty "+objPubli.getImg_Post());
-                objPubli.setUsuario_nombre(objCursor.getString(6));
-
-
+                objPubli.setComentario(objCursor.getString(objCursor.getColumnIndex(Utilidades.CAMPO_PUBLICACION)));
+                objPubli.setUsuario_id(objCursor.getInt(8));//id de usuario
+                objPubli.setImg_Post(objCursor.getString(3));//imagen post
+                objPubli.setUsuario_nombre(objCursor.getString(9));//NOMBRE USUAIRO
+                objPubli.setFecha(objCursor.getString(objCursor.getColumnIndex(Utilidades.CAMPO_DATE)));
+                objPubli.setCantComentarios(objCursor.getInt(objCursor.getColumnIndex(Utilidades.CAMPO_CANT_ME_GUSTAS_PUBLICACIONES)));
+                objPubli.setCantMeGustas(objCursor.getInt(objCursor.getColumnIndex(Utilidades.CAMPO_USUARIOID)));
+                objPubli.setUbicacion(objCursor.getString(objCursor.getColumnIndex(Utilidades.CAMPO_UBICACION_PUBLICACIONES)));
 
                 byte[] imagenEnBites=objCursor.getBlob(objCursor.getColumnIndex("img_perfil"));
                 if (imagenEnBites!=null){
@@ -184,12 +190,34 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                     Bitmap theImage = BitmapFactory.decodeStream(imageStream);
                     objPubli.setUsuario_img_perfil(theImage);
                 }
-
-
                 }
             }
         return objPubli;
        }
+
+    public void SumarCantComentariosEnPublicaion(Integer id) {
+        SQLiteDatabase objSQLdb=this.getWritableDatabase();
+        Publicacion objPubli=null;
+        Cursor objCursor=objSQLdb.rawQuery("SELECT * FROM publicaciones WHERE id="+id,null);
+        if(objCursor!=null){
+            while (objCursor.moveToNext()) {
+                objPubli = new Publicacion();
+                objPubli.setCantComentarios(objCursor.getInt(objCursor.getColumnIndex("cant_comentarios")));
+            }
+        }
+        Integer cant=0;
+        cant=objPubli.getCantComentarios();
+        System.out.println("/*//////////////////////************CANTIDADDDD "+cant);
+
+        cant=cant+1;
+
+        String strSQL = "UPDATE "+Utilidades.TABLA_PUBLICAIONES+" SET "+Utilidades.CAMPO_CANT_COMENTARIOS_PUBLICACIONES+" = "+cant+" WHERE id="+id;
+
+        objSQLdb.execSQL(strSQL);
+
+
+
+    }
 
 
 

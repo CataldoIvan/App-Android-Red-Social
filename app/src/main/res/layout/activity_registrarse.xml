@@ -57,7 +57,7 @@
             android:layout_marginTop="25dp"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
             android:ems="10"
-            android:hint="Nombre "
+            android:hint="Ingrese un Nombre "
             android:inputType="none|text"
             android:maxLength="20" />
 
@@ -152,7 +152,7 @@
             android:layout_marginBottom="5dp"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
             android:ems="10"
-            android:hint="Contrasenia"
+            android:hint="Contraseña"
             android:inputType="textPassword" />
 
         <TextView
